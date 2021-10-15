@@ -1,2 +1,1 @@
-web: java -jar target/api-0.1.1.jar
-java.runtime.version=1.8
+web: java -Dserver.port=$PORT $JAVA_OPTS -jar target/api-0.1.1.jar

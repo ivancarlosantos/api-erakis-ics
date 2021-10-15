@@ -18,8 +18,6 @@ import com.erakis_ics.api.entity.PessoaJuridica;
 @Repository
 public interface PessoaJuridicaRepository extends JpaRepository<PessoaJuridica, Long> {
 
-	// @Query(value = "SELECT u.psjur_cnpj FROM pessoa_juridica u WHERE u.psjur_cnpj
-	// LIKE '%?1%'", nativeQuery = true)
 	List<PessoaJuridica> findByCnpj(String cnpj);
 
 	@Transactional(readOnly = true)

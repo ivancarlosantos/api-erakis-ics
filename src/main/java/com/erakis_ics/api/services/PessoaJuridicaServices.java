@@ -104,10 +104,6 @@ public class PessoaJuridicaServices {
 		return pj;
 	}
 
-	public HttpStatus getStatus() {
-		return HttpStatus.CREATED;
-	}
-
 	public Date TimeSession() {
 		// Integer TIME_EXPIRED = 600_000;
 		return new Date(System.currentTimeMillis());

@@ -96,8 +96,7 @@ public class PessoaJuridicaServices {
 
 	public PessoaJuridica deletePessoaJuridica(Long psjur_id, PessoaJuridica pj) {
 
-		Optional<PessoaJuridica> listPJ = pessoaJuridicaRepository.findById(psjur_id);
-		if ((pj.getPsjur_id() == null || psjur_id < 0) || (listPJ.isEmpty() || !listPJ.isPresent())) {
+		if ((pj.getPsjur_id() == null || psjur_id < 0)) {
 			throw new RuntimeException("Pessoa Jurídica de ID [" + psjur_id + "] não excluída e/ou não encontrada");
 		}
 		pessoaJuridicaRepository.deleteById(psjur_id);

@@ -37,7 +37,7 @@ public class PessoaFisicaServices {
 
 	public Optional<PessoaFisica> findPFByNome(String nome) {
 		Optional<PessoaFisica> findPFNome = pessoaFisicaRepository.findByNome(nome);
-		if (!findPFNome.isEmpty()) {
+		if (findPFNome.isPresent()) {
 			return findPFNome;
 		} else {
 			throw new RuntimeException("Nome não encontrado");

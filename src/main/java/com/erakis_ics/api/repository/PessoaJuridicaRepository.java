@@ -21,10 +21,10 @@ public interface PessoaJuridicaRepository extends JpaRepository<PessoaJuridica, 
 	List<PessoaJuridica> findByCnpj(String cnpj);
 
 	@Transactional(readOnly = true)
-	@Query(value = "SELECT * FROM pessoa_juridica u WHERE u.psjur_razao_social LIKE %?1% ", nativeQuery = true)
+	@Query(value = "SELECT u FROM pessoa_juridica u WHERE u.psjur_razao_social LIKE %?1%", nativeQuery = true)
 	Optional<PessoaJuridica> findByRazaoSocial(@Param(value = "razaoSocial") String razaoSocial);
 
 	@Transactional(readOnly = true)
-	@Query(value = "SELECT * FROM pessoa_juridica p WHERE p.psjur_nome_fantasia LIKE %?1%", nativeQuery = true)
+	@Query(value = "SELECT p FROM pessoa_juridica p WHERE p.psjur_nome_fantasia LIKE %?1%", nativeQuery = true)
 	Optional<PessoaJuridica> findByNomeFantasia(@Param(value = "nomeFantasia") String nomeFantasia);
 }

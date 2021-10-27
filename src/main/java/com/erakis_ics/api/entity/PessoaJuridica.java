@@ -12,11 +12,11 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "pessoa_juridica")
-public class PessoaJuridica implements Serializable {
+public class PessoaJuridica extends Pessoa implements Serializable {
 
-	private static final long serialVersionUID = -6105756219868534161L;
+	private static final long serialVersionUID = 1L;
 
-	@Id()
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long psjur_id;
 	

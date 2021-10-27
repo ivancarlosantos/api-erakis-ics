@@ -43,8 +43,8 @@ public class SwaggerConfig {
 						"ICS Systems",
 						"https://erakis.com.br", 
 						"erakisti@gmail.com"), 
-						"Apache License Version 2.0", 
-						"http://www.apache.org/licenses/LICENSE-2.0",
+						"Spring Project Framework", 
+						"https://spring.io",
 						new LinkedList<VendorExtension>()
 				);
 		return apiInfo;

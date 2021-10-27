@@ -1,6 +1,5 @@
 package com.erakis_ics.api.services;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,10 +25,10 @@ public class PessoaJuridicaServices {
 
 		return pessoaJuridicaRepository.save(pj);
 	}
-
+	
 	public List<PessoaJuridica> findPJAll() {
 		List<PessoaJuridica> listAll = pessoaJuridicaRepository.findAll(Sort.by("nomeFantasia"));
-		if (listAll == null) {
+		if (listAll == null || listAll.isEmpty()) {
 			throw new RuntimeException("Nenhuma Pessoa Jurídica encontrada");
 		}
 
@@ -49,23 +48,20 @@ public class PessoaJuridicaServices {
 
 	public Optional<PessoaJuridica> findPJByRazaoSocial(String razaoSocial) {
 		Optional<PessoaJuridica> findByRazaoSocial = pessoaJuridicaRepository.findByRazaoSocial(razaoSocial);
-		if (findByRazaoSocial.isPresent()) {
+		if (findByRazaoSocial.isPresent() && razaoSocial.contains(findByRazaoSocial.toString())) {
+			return findByRazaoSocial;
 		} else {
 			throw new RuntimeException("Razão Social não encontrada");
 		}
-
-		return findByRazaoSocial;
 	}
 
 	public Optional<PessoaJuridica> findPJByNomeFantasia(String nomeFantasia) {
 		Optional<PessoaJuridica> findByNomeFantasia = pessoaJuridicaRepository.findByNomeFantasia(nomeFantasia);
-		if (findByNomeFantasia.isPresent() || nomeFantasia.contains(findByNomeFantasia.toString())) {
-			//
+		if (findByNomeFantasia.isPresent() && nomeFantasia.contains(findByNomeFantasia.toString())) {
+			return findByNomeFantasia;
 		} else {
 			throw new RuntimeException("Nome Fantasia não encontrado");
 		}
-
-		return findByNomeFantasia;
 	}
 
 	public PessoaJuridica findPJByID(Long psjur_id) {
@@ -94,18 +90,11 @@ public class PessoaJuridicaServices {
 		return pessoaJuridicaRepository.save(pessoaJuridica);
 	}
 
-	public PessoaJuridica deletePessoaJuridica(Long psjur_id, PessoaJuridica pj) {
+	public void deletePessoaJuridica(Long psjur_id, PessoaJuridica pj) {
 
 		if ((pj.getPsjur_id() == null || psjur_id < 0)) {
 			throw new RuntimeException("Pessoa Jurídica de ID [" + psjur_id + "] não excluída e/ou não encontrada");
 		}
 		pessoaJuridicaRepository.deleteById(psjur_id);
-
-		return pj;
-	}
-
-	public Date TimeSession() {
-		// Integer TIME_EXPIRED = 600_000;
-		return new Date(System.currentTimeMillis());
 	}
 }

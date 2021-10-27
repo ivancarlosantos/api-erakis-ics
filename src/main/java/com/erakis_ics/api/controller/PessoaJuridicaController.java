@@ -29,13 +29,6 @@ public class PessoaJuridicaController {
 	@Autowired
 	private PessoaJuridicaServices pessoaJuridicaServices;
 
-	@GetMapping(path = "/status")
-	@ApiOperation(value = "Retorna Status de Conexão 200 OK, Se ativo")
-	public String status() {
-		return "STATUS: " + HttpStatus.OK + " CONNECTION ACCEPT INITIALIZER TOMCAT SERVER PORT: 8090 - Session Time: "
-				+ pessoaJuridicaServices.TimeSession();
-	}
-
 	@PostMapping(path = "/pessoajuridica/save")
 	@ApiOperation(value = "Cadastra uma Pessoa Jurídica")
 	public PessoaJuridica save(@RequestBody PessoaJuridica pj) {
@@ -70,7 +63,7 @@ public class PessoaJuridicaController {
 	}
 
 	@GetMapping(path = "/pessoajuridica/findPJByID/{psjur_id}")
-	@ApiOperation(value = "Retorna Pessoa Jurídica pelo identificado ID")
+	@ApiOperation(value = "Retorna Pessoa Jurídica pelo identificador ID")
 	public PessoaJuridica findPJByID(@PathVariable(name = "psjur_id", required = true) Long psjur_id)
 			throws RuntimeException {
 		return pessoaJuridicaServices.findPJByID(psjur_id);
@@ -88,6 +81,6 @@ public class PessoaJuridicaController {
 	@ApiOperation(value = "Deleta uma Pessoa Jurídica por ID")
 	public void delete(@PathVariable(name = "psjur_id", required = true) Long psjur_id, PessoaJuridica pj) {
 		pessoaJuridicaServices.deletePessoaJuridica(psjur_id, pj);
-		ResponseEntity.ok(HttpStatus.GONE);
+		ResponseEntity.ok(HttpStatus.NO_CONTENT);
 	}
 }

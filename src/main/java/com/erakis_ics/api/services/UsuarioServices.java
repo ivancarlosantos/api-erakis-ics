@@ -1,12 +1,14 @@
 package com.erakis_ics.api.services;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import com.erakis_ics.api.dtos.UsuarioDTO;
 import com.erakis_ics.api.entity.Usuario;
 import com.erakis_ics.api.repository.UsuarioRepository;
 
@@ -18,52 +20,59 @@ import com.erakis_ics.api.repository.UsuarioRepository;
 public class UsuarioServices {
 
 	@Autowired
-	private UsuarioRepository loginRepository;
+	private UsuarioRepository usuarioRepository;
 
-	public Usuario save(Usuario l) throws Exception {
-		if (l == null) {
-			throw new Exception("Usuário [" + l + "] não encontrado");
-		} else {
-			loginRepository.save(l);
+	public Usuario saveUsuario(Usuario usuario) {
+		if (usuario == null) {
+			throw new RuntimeException("Usuário [" + usuario + "] não encontrado");
 		}
-		return l;
+			
+		usuarioRepository.save(usuario);
+		return usuario;
 	}
 
-	public Usuario loginFindById(Long id) throws Exception {
-		Optional<Usuario> findByID = loginRepository.findById(id);
-		Usuario login = null;
-		if (!findByID.isPresent()) {
-			throw new Exception("Erro ao encontrar Usuário");
-		} else {
-			login = findByID.get();
+	public Usuario findUsuarioByID(Long usr_id) {
+		Optional<Usuario> findUsuarioByID = usuarioRepository.findById(usr_id);
+		Usuario usuario = null;
+		if (!findUsuarioByID.isPresent()) {
+			throw new RuntimeException("Usuário com ID = [" + usr_id + "] " + HttpStatus.NOT_FOUND + " ");
 		}
-		return login;
+		usuario = findUsuarioByID.get();
+
+		return usuario;
 	}
 
-	public List<Usuario> loginFindAll() throws Exception {
-		List<Usuario> listAll = loginRepository.findAll();
-		if (listAll.isEmpty() || listAll.size() < 0) {
-			throw new Exception("A lista está vázia");
-		}
+	public List<UsuarioDTO> usuarioFindAll() {
+		List<UsuarioDTO> listAll = usuarioRepository
+								   .findAll()
+								   .stream()
+								   .map(usrDTO -> new UsuarioDTO(usrDTO))
+								   .collect(Collectors.toList());
 		return listAll;
 	}
 
-	public Usuario loginUpdate(Usuario l) throws Exception {
-		if (l == null) {
-			throw new Exception("Usuário [" + l + "] não encontrado");
-		}
-		return loginRepository.saveAndFlush(l);
+	public Usuario updateUsuario(Long usr_id, Usuario usuarioDTO) {
+		Usuario usuario = findUsuarioByID(usr_id);
+		usuario.setNome(usuarioDTO.getNome());
+		usuario.setSenha(usuarioDTO.getSenha());
+		usuario.setSalt(usuarioDTO.getSalt());
+		usuario.setUltimoLogin(usuarioDTO.getUltimoLogin());
+		usuario.setAdministrador(usuarioDTO.isAdministrador());
+		usuario.setBloqueado(usuarioDTO.isBloqueado());
+		usuario.setLoginBloqueado(usuarioDTO.isLoginBloqueado());
+		usuario.setCancelarBloqueado(usuarioDTO.getCancelarBloqueado());
+		usuario.setEditarBloqueado(usuarioDTO.getEditarBloqueado());
+		usuario.setPessoaFisica(usuarioDTO.getPessoaFisica());
+		
+		return usuarioRepository.save(usuario);
+		
 	}
 
-	public void deleteById(Long id) throws Exception {
-		if (id == null) {
-			throw new Exception("Usuário não encontrado e/ou não existe");
+	public void deleteUsuario(Long usr_id, UsuarioDTO usuarioDTO) {
+		if (usuarioDTO.getUsr_id() == null || usr_id < 0) {
+			throw new RuntimeException("Usuário com ID = [" + usr_id + "]" + HttpStatus.NOT_FOUND + " ");
 		}
-		loginRepository.deleteById(id);
-	}
 
-	public Date expiredSession() {
-		Integer EXPIRED_SESSION_TIME = 600_000;
-		return new Date(System.currentTimeMillis() + EXPIRED_SESSION_TIME);
+		usuarioRepository.deleteById(usuarioDTO.getUsr_id());
 	}
 }

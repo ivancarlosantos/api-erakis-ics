@@ -1,9 +1,10 @@
 package com.erakis_ics.api.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,8 +14,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.erakis_ics.api.dtos.UsuarioDTO;
 import com.erakis_ics.api.entity.Usuario;
-import com.erakis_ics.api.repository.UsuarioRepository;
 import com.erakis_ics.api.services.UsuarioServices;
 
 import io.swagger.annotations.Api;
@@ -31,39 +32,43 @@ import io.swagger.annotations.ApiOperation;
 public class UsuarioController {
 
 	@Autowired
-	private UsuarioRepository usuarioRepository;
-
-	@Autowired
 	private UsuarioServices usuarioServices;
-
+	
 	@PostMapping(path = "/usuario/save")
-	@ApiOperation(value = "Salva um Usuário/Login")
-	public Usuario save(@RequestBody Usuario login) throws Exception {
-		return usuarioServices.save(login);
+	@ApiOperation(value = "Cria/Salva um Usuário")
+	public ResponseEntity<UsuarioDTO> save(@RequestBody Usuario usr){
+		Usuario usuario = usuarioServices.saveUsuario(usr);
+		UsuarioDTO usuarioDTO = new UsuarioDTO(usuario);
+		return ResponseEntity.ok().body(usuarioDTO);
 	}
 
-	@GetMapping(path = "/usuario/listAll")
-	@ApiOperation(value = "Retorna a lista de Usuários/Login")
-	public List<Usuario> listLoginAll() throws Exception {
-		return usuarioServices.loginFindAll();
+	@GetMapping(path = "/usuario/listUsuarioTodos")
+	@ApiOperation(value = "Retorna a lista de Usuários")
+	public ResponseEntity<List<UsuarioDTO>> listUsuarioAll() {
+		List<UsuarioDTO> usuarioDTO = usuarioServices.usuarioFindAll();
+		return ResponseEntity.ok().body(usuarioDTO);
+	}
+	
+	@GetMapping(path = "/usuario/findUsuarioByID/{usr_id}")
+	@ApiOperation(value = "Retorna Usuário pelo identificador ID")
+	public ResponseEntity<UsuarioDTO> findUsuarioByID(@PathVariable(name = "usr_id", required = true) Long usr_id) {
+		Usuario usuario = usuarioServices.findUsuarioByID(usr_id);
+		UsuarioDTO usuarioDTO = new UsuarioDTO(usuario);
+		return ResponseEntity.ok().body(usuarioDTO);
 	}
 
-	@GetMapping(path = "/usuario/findByID/id/{id}")
-	@ApiOperation(value = "Retorna Usuário/Login único por ID")
-	public Optional<Usuario> findByID(@PathVariable(name = "id", required = true) Long id) {
-		return usuarioRepository.findById(id);
+	@PutMapping(path = "/usuario/update/{usr_id}")
+	@ApiOperation(value = "Atualiza os registros de um Usuário")
+	public ResponseEntity<Usuario> update(@PathVariable()Long usr_id, @RequestBody Usuario usuarioDTO){
+		Usuario usuario = usuarioServices.updateUsuario(usr_id, usuarioDTO);
+		return ResponseEntity.ok().body(usuario);
 	}
 
-	@PutMapping(path = "/usuario/update")
-	@ApiOperation(value = "Atualiza Usuário/Login")
-	public Usuario update(@RequestBody Usuario login) throws Exception {
-		return usuarioServices.save(login);
-	}
-
-	@DeleteMapping(path = "/usuario/delete/{id}")
-	@ApiOperation(value = "Deleta um Usuário/Login por ID")
-	public void delete(@PathVariable(name = "id", required = true) Long id) throws Exception {
-		usuarioServices.deleteById(id);
+	@DeleteMapping(path = "/usuario/delete/{usr_id}")
+	@ApiOperation(value = "Deleta um Usuário por ID")
+	public void delete(@PathVariable(name = "id", required = true) Long usr_id, UsuarioDTO usuarioDTO) {
+		usuarioServices.deleteUsuario(usr_id, usuarioDTO);
+		ResponseEntity.ok(HttpStatus.NO_CONTENT);
 	}
 }
 

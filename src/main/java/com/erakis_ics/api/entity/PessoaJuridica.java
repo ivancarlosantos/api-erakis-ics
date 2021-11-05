@@ -12,38 +12,56 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "pessoa_juridica")
-public class PessoaJuridica extends Pessoa implements Serializable {
+public class PessoaJuridica implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long psjur_id;
-	
-	@Column(name = "psjur_cnpj", nullable = false,length = 14)
+
+	@Column(name = "psjur_cnpj", nullable = false, length = 14)
 	private String cnpj;
 
-	@Column(name = "psjur_codigo_suframa",nullable = false,length = 255)
+	@Column(name = "psjur_codigo_suframa", length = 255)
 	private String codigoSuframa;
-	
-	@Column(name = "psjur_inscricao_estadual",nullable = false,length = 255)
+
+	@Column(name = "psjur_inscricao_estadual", length = 255)
 	private String inscricaoEstadual;
-	
-	@Column(name = "psjur_inscricao_municipal",nullable = false,length = 255)
+
+	@Column(name = "psjur_inscricao_municipal", length = 255)
 	private String inscricaoMunicipal;
-	
-	@Column(name = "psjur_nome_fantasia",nullable = false,length = 255)
+
+	@Column(name = "psjur_nome_fantasia", nullable = false, length = 255)
 	private String nomeFantasia;
 
-	@Column(name = "psjur_razao_social",nullable = false,length = 255)
+	@Column(name = "psjur_razao_social", nullable = false, length = 255)
 	private String razaoSocial;
-	
-	@Column(name = "psjur_sistema_tributario",nullable = false)
+
+	@Column(name = "psjur_sistema_tributario")
 	private SistemaTributario sistemaTributario;
 
-	@Column(name = "psjur_site",nullable = false,length = 255)
+	@Column(name = "psjur_site", length = 255)
 	private String site;
-		
+
+	public PessoaJuridica() {
+	}
+
+	public PessoaJuridica(Long psjur_id, String cnpj, String codigoSuframa, String inscricaoEstadual,
+			String inscricaoMunicipal, String nomeFantasia, String razaoSocial, SistemaTributario sistemaTributario,
+			String site) {
+		super();
+		this.psjur_id = psjur_id;
+		this.cnpj = cnpj;
+		this.codigoSuframa = codigoSuframa;
+		this.inscricaoEstadual = inscricaoEstadual;
+		this.inscricaoMunicipal = inscricaoMunicipal;
+		this.nomeFantasia = nomeFantasia;
+		this.razaoSocial = razaoSocial;
+		this.sistemaTributario = sistemaTributario;
+		this.site = site;
+	}
+
 	public Long getPsjur_id() {
 		return psjur_id;
 	}
@@ -118,25 +136,21 @@ public class PessoaJuridica extends Pessoa implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(cnpj, codigoSuframa, inscricaoEstadual, inscricaoMunicipal, nomeFantasia, psjur_id,
-				razaoSocial, sistemaTributario, site);
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(psjur_id);
+		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (!super.equals(obj))
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
 		PessoaJuridica other = (PessoaJuridica) obj;
-		return Objects.equals(cnpj, other.cnpj) && Objects.equals(codigoSuframa, other.codigoSuframa)
-				&& Objects.equals(inscricaoEstadual, other.inscricaoEstadual)
-				&& Objects.equals(inscricaoMunicipal, other.inscricaoMunicipal)
-				&& Objects.equals(nomeFantasia, other.nomeFantasia) && Objects.equals(psjur_id, other.psjur_id)
-				&& Objects.equals(razaoSocial, other.razaoSocial) && sistemaTributario == other.sistemaTributario
-				&& Objects.equals(site, other.site);
+		return Objects.equals(psjur_id, other.psjur_id);
 	}
-	
 }

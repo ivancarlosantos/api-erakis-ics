@@ -2,7 +2,6 @@ package com.erakis_ics.api.controller;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,20 +38,14 @@ public class PessoaFisicaController {
 
 	@GetMapping(path = "/pessoafisica/listPessoaFisicaTodos")
 	@ApiOperation(value = "Lista todas as Pessoa Físicas")
-	public ResponseEntity<List<PessoaFisicaDTO>> listPessoaFisicaAll() throws RuntimeException {
-		List<PessoaFisicaDTO> listPFDTO = pessoaFisicaServices
-				.findPFAll()
-				.stream()
-				.map(pessoaFisica -> new PessoaFisicaDTO(pessoaFisica))
-				.collect(Collectors.toList());
-
+	public ResponseEntity<List<PessoaFisicaDTO>> listPessoaFisicaAll() {
+		List<PessoaFisicaDTO> listPFDTO = pessoaFisicaServices.findPFAll();
 		return ResponseEntity.ok().body(listPFDTO);
 	}
 
 	@GetMapping(path = "/pessoafisica/findPFByID/{psfis_id}")
 	@ApiOperation(value = "Retorna Pessoa Física pelo identificador ID")
-	public ResponseEntity<PessoaFisicaDTO> findPFByID(@PathVariable(name = "psfis_id", required = true) Long psfis_id)
-			throws RuntimeException {
+	public ResponseEntity<PessoaFisicaDTO> findPFByID(@PathVariable(name = "psfis_id", required = true) Long psfis_id) {
 		PessoaFisica pf = pessoaFisicaServices.findPFByID(psfis_id);
 		PessoaFisicaDTO pfDTO = new PessoaFisicaDTO(pf);
 		return ResponseEntity.ok().body(pfDTO);
@@ -76,17 +69,15 @@ public class PessoaFisicaController {
 
 	@PutMapping(path = "/pessoafisica/update/{psfis_id}")
 	@ApiOperation(value = "Atualiza os registros de uma Pessoa Física")
-	public ResponseEntity<PessoaFisicaDTO> update(@PathVariable Long psfis_id, @RequestBody PessoaFisica pf)
-			throws RuntimeException {
-		PessoaFisica pessoaFisica = pessoaFisicaServices.updatePessoaFisica(psfis_id, pf);
-		PessoaFisicaDTO pfDTO = new PessoaFisicaDTO(pessoaFisica);
-		return ResponseEntity.ok().body(pfDTO);
+	public ResponseEntity<PessoaFisica> update(@PathVariable(name = "psfis_id", required = true) Long psfis_id, @RequestBody PessoaFisicaDTO pfDTO) {
+		PessoaFisica pessoaFisica = pessoaFisicaServices.updatePessoaFisica(psfis_id, pfDTO);
+		return ResponseEntity.ok().body(pessoaFisica);
 	}
 
 	@DeleteMapping(path = "/pessoafisica/delete/{psfis_id}")
 	@ApiOperation(value = "Deleta uma Pessoa Física por ID")
-	public void delete(@PathVariable(name = "psfis_id", required = true) Long psfis_id, PessoaFisica pf) {
-		pessoaFisicaServices.deletePessoaFisica(psfis_id, pf);
+	public void delete(@PathVariable(name = "psfis_id", required = true) Long psfis_id, PessoaFisicaDTO pfDTO) {
+		pessoaFisicaServices.deletePessoaFisica(psfis_id, pfDTO);
 		ResponseEntity.ok(HttpStatus.NO_CONTENT);
 	}
 }

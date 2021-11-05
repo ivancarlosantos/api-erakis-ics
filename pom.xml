@@ -17,7 +17,7 @@
 
 	<groupId>com.erakis_ics</groupId>
 	<artifactId>api</artifactId>
-	<version>0.1.1</version>
+	<version>0.2.1</version>
 	<packaging>jar</packaging>
 
 	<name>api</name>
@@ -82,18 +82,7 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-
-<!-- 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-test</artifactId>
-			<scope>test</scope>
-		</dependency> -->
-
+		
 	</dependencies>
 
 	<build>

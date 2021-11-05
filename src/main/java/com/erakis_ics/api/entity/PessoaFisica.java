@@ -15,7 +15,7 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "pessoa_fisica")
-public class PessoaFisica extends Pessoa implements Serializable {
+public class PessoaFisica implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -31,7 +31,7 @@ public class PessoaFisica extends Pessoa implements Serializable {
 	private Sexo sexo;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name = "psfis_data_nascimento", nullable = false)
+	@Column(name = "psfis_data_nascimento")
 	private Date dataNascimento;
 
 	@Column(name = "psfis_estado_civil")
@@ -76,7 +76,6 @@ public class PessoaFisica extends Pessoa implements Serializable {
 		this.observacao = observacao;
 		this.cnh = cnh;
 		this.profissao = profissao;
-
 	}
 
 	public Long getId() {
@@ -174,6 +173,7 @@ public class PessoaFisica extends Pessoa implements Serializable {
 	public void setProfissao(String profissao) {
 		this.profissao = profissao;
 	}
+
 
 	@Override
 	public int hashCode() {

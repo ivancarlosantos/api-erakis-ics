@@ -5,9 +5,10 @@ import java.io.Serializable;
 import com.erakis_ics.api.entity.PessoaJuridica;
 import com.erakis_ics.api.entity.SistemaTributario;
 
-public class PessoaJuridicaDTO implements Serializable{
+public class PessoaJuridicaDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
 	private Long psjur_id;
 	private String cnpj;
 	private String codigoSuframa;
@@ -17,8 +18,9 @@ public class PessoaJuridicaDTO implements Serializable{
 	private String razaoSocial;
 	private SistemaTributario sistemaTributario;
 	private String site;
-	
-	public PessoaJuridicaDTO() {}
+
+	public PessoaJuridicaDTO() {
+	}
 
 	public PessoaJuridicaDTO(PessoaJuridica pj) {
 		this.psjur_id = pj.getPsjur_id();
@@ -32,13 +34,14 @@ public class PessoaJuridicaDTO implements Serializable{
 		this.site = pj.getSite();
 	}
 
+	
 	public Long getPsjur_id() {
 		return psjur_id;
 	}
 
 	public void setPsjur_id(Long psjur_id) {
 		this.psjur_id = psjur_id;
-	}
+	} 
 
 	public String getCnpj() {
 		return cnpj;
@@ -102,5 +105,5 @@ public class PessoaJuridicaDTO implements Serializable{
 
 	public void setSite(String site) {
 		this.site = site;
-	}	
+	}
 }

@@ -15,13 +15,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.erakis_ics.api.dtos.PessoaJuridicaDTO;
 import com.erakis_ics.api.entity.PessoaJuridica;
 import com.erakis_ics.api.services.PessoaJuridicaServices;
 
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
-@Api(value = "Erakis ICS API")
 @RestController
 @RequestMapping(path = "/api")
 public class PessoaJuridicaController {
@@ -31,56 +30,65 @@ public class PessoaJuridicaController {
 
 	@PostMapping(path = "/pessoajuridica/save")
 	@ApiOperation(value = "Cadastra uma Pessoa Jurídica")
-	public PessoaJuridica save(@RequestBody PessoaJuridica pj) {
-		return pessoaJuridicaServices.savePessoaJuridica(pj);
+	public ResponseEntity<PessoaJuridicaDTO> save(@RequestBody PessoaJuridica pj) {
+		PessoaJuridica pessoaJuridica = pessoaJuridicaServices.savePessoaJuridica(pj);
+		PessoaJuridicaDTO pjDTO = new PessoaJuridicaDTO(pessoaJuridica);
+		return ResponseEntity.ok().body(pjDTO);
 	}
 
 	@GetMapping(path = "/pessoajuridica/listPessoaJuridicaTodos")
 	@ApiOperation(value = "Lista todas as Pessoa Jurídicas")
-	public List<PessoaJuridica> listPessoaJuridicaAll() throws RuntimeException {
-		return pessoaJuridicaServices.findPJAll();
-	}
-
-	@GetMapping(path = "/pessoajuridica/findPJByCNPJ/{psjur_cnpj}")
-	@ApiOperation(value = "Retorna Pessoa Jurídica por CNPJ")
-	public List<PessoaJuridica> findPJByCNPJ(@PathVariable String psjur_cnpj) {
-		List<PessoaJuridica> pj = pessoaJuridicaServices.findPJByCNPJ(psjur_cnpj);
-		return pj;
-	}
-
-	@GetMapping(path = "/pessoajuridica/findPJByRazaoSocial/{psjur_razao_social}")
-	@ApiOperation(value = "Retorna Pessoa Jurídica por Razão Social")
-	public Optional<PessoaJuridica> findPJByRazaoSocial(@PathVariable String psjur_razao_social) {
-		Optional<PessoaJuridica> pj = pessoaJuridicaServices.findPJByRazaoSocial(psjur_razao_social);
-		return pj;
-	}
-
-	@GetMapping(path = "/pessoajuridica/findPJByNomeFantasia/{psjur_nome_fantasia}")
-	@ApiOperation(value = "Retorna Pessoa Jurídica por Nome Fantasia")
-	public Optional<PessoaJuridica> findPJByNomeFantasia(@PathVariable String psjur_nome_fantasia) {
-		Optional<PessoaJuridica> pj = pessoaJuridicaServices.findPJByNomeFantasia(psjur_nome_fantasia);
-		return pj;
+	public ResponseEntity<List<PessoaJuridicaDTO>> listPessoaJuridicaAll() {
+		List<PessoaJuridicaDTO> listPJDTO = pessoaJuridicaServices.findPJAll();
+		return ResponseEntity.ok().body(listPJDTO);
 	}
 
 	@GetMapping(path = "/pessoajuridica/findPJByID/{psjur_id}")
 	@ApiOperation(value = "Retorna Pessoa Jurídica pelo identificador ID")
-	public PessoaJuridica findPJByID(@PathVariable(name = "psjur_id", required = true) Long psjur_id)
-			throws RuntimeException {
-		return pessoaJuridicaServices.findPJByID(psjur_id);
+	public ResponseEntity<PessoaJuridicaDTO> findPJByID(
+			@PathVariable(name = "psjur_id", required = true) Long psjur_id) {
+		PessoaJuridica pj = pessoaJuridicaServices.findPJByID(psjur_id);
+		PessoaJuridicaDTO pjDTO = new PessoaJuridicaDTO(pj);
+		return ResponseEntity.ok().body(pjDTO);
+	}
+
+	@GetMapping(path = "/pessoajuridica/findPJByCNPJ/{psjur_cnpj}")
+	@ApiOperation(value = "Retorna Pessoa Jurídica por CNPJ")
+	public ResponseEntity<Optional<PessoaJuridicaDTO>> findPJByCNPJ(
+			@PathVariable(name = "psjur_cnpj", required = true) String psjur_cnpj) {
+		Optional<PessoaJuridicaDTO> listPJCNPJ = pessoaJuridicaServices.findPJByCNPJ(psjur_cnpj);
+		return ResponseEntity.ok().body(listPJCNPJ);
+	}
+
+	@GetMapping(path = "/pessoajuridica/findPJByRazaoSocial/{psjur_razao_social}")
+	@ApiOperation(value = "Retorna Pessoa Jurídica por Razão Social")
+	public ResponseEntity<Optional<PessoaJuridicaDTO>> findPJByRazaoSocial(
+			@PathVariable(name = "psjur_razao_social", required = true) String psjur_razao_social) {
+		Optional<PessoaJuridicaDTO> listPJ = pessoaJuridicaServices.findPJByRazaoSocial(psjur_razao_social);
+		return ResponseEntity.ok().body(listPJ);
+	}
+
+	@GetMapping(path = "/pessoajuridica/findPJByNomeFantasia/{psjur_nome_fantasia}")
+	@ApiOperation(value = "Retorna Pessoa Jurídica por Nome Fantasia")
+	public ResponseEntity<Optional<PessoaJuridicaDTO>> findPJByNomeFantasia(
+			@PathVariable(name = "psjur_nome_fantasia", required = true) String psjur_nome_fantasia) {
+		Optional<PessoaJuridicaDTO> listPJ = pessoaJuridicaServices.findPJByNomeFantasia(psjur_nome_fantasia);
+		return ResponseEntity.ok().body(listPJ);
 	}
 
 	@PutMapping(path = "/pessoajuridica/update/{psjur_id}")
 	@ApiOperation(value = "Atualiza os registros de uma Pessoa Jurídica")
-	public ResponseEntity<PessoaJuridica> update(@PathVariable Long psjur_id, @RequestBody PessoaJuridica pj)
-			throws RuntimeException {
-		PessoaJuridica pessoaJuridica = pessoaJuridicaServices.updatePessoaJuridica(psjur_id, pj);
-		return ResponseEntity.ok().body(pessoaJuridica);
+	public ResponseEntity<PessoaJuridica> update(@PathVariable(name = "psjur_id", required = true) Long psjur_id,
+			@RequestBody PessoaJuridicaDTO pjDTO) {
+		PessoaJuridica pj = pessoaJuridicaServices.updatePessoaJuridica(psjur_id, pjDTO);
+
+		return ResponseEntity.ok().body(pj);
 	}
 
 	@DeleteMapping(path = "/pessoajuridica/delete/{psjur_id}")
 	@ApiOperation(value = "Deleta uma Pessoa Jurídica por ID")
-	public void delete(@PathVariable(name = "psjur_id", required = true) Long psjur_id, PessoaJuridica pj) {
-		pessoaJuridicaServices.deletePessoaJuridica(psjur_id, pj);
+	public void delete(@PathVariable(name = "psjur_id", required = true) Long psjur_id, PessoaJuridicaDTO pjDTO) {
+		pessoaJuridicaServices.deletePessoaJuridica(psjur_id, pjDTO);
 		ResponseEntity.ok(HttpStatus.NO_CONTENT);
 	}
 }

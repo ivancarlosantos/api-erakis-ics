@@ -2,9 +2,7 @@ package com.erakis_ics.api.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,10 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -48,13 +43,6 @@ public class Usuario implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "usr_ultimo_login")
 	private Date ultimoLogin;
-	
-	@OrderBy("nome asc")
-	@JoinTable(name="usuario__grupo",
-		joinColumns={@JoinColumn(name="usgp_usr_id")},
-        inverseJoinColumns={@JoinColumn(name="usgp_gru_id")})
-	@ManyToMany(fetch = FetchType.LAZY)
-	private Set<Grupo> grupos = new HashSet<Grupo>(0);
 
 	@Column(name = "usr_administrador")
 	private boolean administrador;
@@ -72,13 +60,14 @@ public class Usuario implements Serializable {
 	private Boolean editarBloqueado;
 
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "usr_pessoa_fisica_id",unique = true)
+	@JoinColumn(name = "usr_pessoa_fisica_id", unique = true)
 	private PessoaFisica pessoaFisica;
 
 	public Usuario() {
 	}
 
-	public Usuario(Long usr_id, String nome, String senha, String salt, Date ultimoLogin, Set<Grupo> grupos,
+	
+	public Usuario(Long usr_id, String nome, String senha, String salt, Date ultimoLogin,
 			boolean administrador, boolean bloqueado, boolean loginBloqueado, Boolean cancelarBloqueado,
 			Boolean editarBloqueado, PessoaFisica pessoaFisica) {
 		super();
@@ -87,7 +76,6 @@ public class Usuario implements Serializable {
 		this.senha = senha;
 		this.salt = salt;
 		this.ultimoLogin = ultimoLogin;
-		this.grupos = grupos;
 		this.administrador = administrador;
 		this.bloqueado = bloqueado;
 		this.loginBloqueado = loginBloqueado;
@@ -134,14 +122,6 @@ public class Usuario implements Serializable {
 
 	public void setUltimoLogin(Date ultimoLogin) {
 		this.ultimoLogin = ultimoLogin;
-	}
-
-	public Set<Grupo> getGrupos() {
-		return grupos;
-	}
-
-	public void setGrupos(Set<Grupo> grupos) {
-		this.grupos = grupos;
 	}
 
 	public boolean isAdministrador() {

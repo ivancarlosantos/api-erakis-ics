@@ -2,12 +2,14 @@ package com.erakis_ics.api.services;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import com.erakis_ics.api.dtos.PessoaJuridicaDTO;
 import com.erakis_ics.api.entity.PessoaJuridica;
 import com.erakis_ics.api.repository.PessoaJuridicaRepository;
 
@@ -18,47 +20,46 @@ public class PessoaJuridicaServices {
 	private PessoaJuridicaRepository pessoaJuridicaRepository;
 
 	public PessoaJuridica savePessoaJuridica(PessoaJuridica pj) {
-		List<PessoaJuridica> findCNPJ = pessoaJuridicaRepository.findByCnpj(pj.getCnpj());
-		if (findCNPJ.size() > 0) {
-			throw new RuntimeException("ERROR: Pessoa Jurídica não cadastrada - CNPJ já Existe");
+		Optional<PessoaJuridicaDTO> findCNPJ = pessoaJuridicaRepository.findByCnpj(pj.getCnpj());
+		if (findCNPJ.isPresent()) {
+			throw new RuntimeException("CNPJ já Existe - Pessoa Jurídica não foi cadastrada");
 		}
 
 		return pessoaJuridicaRepository.save(pj);
 	}
-	
-	public List<PessoaJuridica> findPJAll() {
-		List<PessoaJuridica> listAll = pessoaJuridicaRepository.findAll(Sort.by("nomeFantasia"));
-		if (listAll == null || listAll.isEmpty()) {
-			throw new RuntimeException("Nenhuma Pessoa Jurídica encontrada");
-		}
 
+	public List<PessoaJuridicaDTO> findPJAll() {
+		List<PessoaJuridicaDTO> listAll = pessoaJuridicaRepository
+				 					      .findAll(Sort.by("nomeFantasia"))
+				 					      .stream()
+				 					      .map(pjDTO -> new PessoaJuridicaDTO(pjDTO))
+				 					      .collect(Collectors.toList());
 		return listAll;
 	}
 
-	public List<PessoaJuridica> findPJByCNPJ(String psjur_cnpj) {
-		List<PessoaJuridica> findCNPJ = pessoaJuridicaRepository.findByCnpj(psjur_cnpj);
-		if (findCNPJ.size() > 0) {
-
+	public Optional<PessoaJuridicaDTO> findPJByCNPJ(String cnpj) {
+		Optional<PessoaJuridicaDTO> findCNPJ = pessoaJuridicaRepository.findByCnpj(cnpj);
+	
+		if (findCNPJ.isPresent()) {
 		} else {
 			throw new RuntimeException("CNPJ não encontrado");
 		}
-
 		return findCNPJ;
 	}
 
-	public Optional<PessoaJuridica> findPJByRazaoSocial(String razaoSocial) {
-		Optional<PessoaJuridica> findByRazaoSocial = pessoaJuridicaRepository.findByRazaoSocial(razaoSocial);
-		if (findByRazaoSocial.isPresent() && razaoSocial.contains(findByRazaoSocial.toString())) {
-			return findByRazaoSocial;
+	public Optional<PessoaJuridicaDTO> findPJByRazaoSocial(String razaoSocial) {
+		Optional<PessoaJuridicaDTO> findRazaoSocial = pessoaJuridicaRepository.findByRazaoSocial(razaoSocial);
+		if (findRazaoSocial.isPresent()) {
+			return findRazaoSocial;
 		} else {
 			throw new RuntimeException("Razão Social não encontrada");
 		}
 	}
 
-	public Optional<PessoaJuridica> findPJByNomeFantasia(String nomeFantasia) {
-		Optional<PessoaJuridica> findByNomeFantasia = pessoaJuridicaRepository.findByNomeFantasia(nomeFantasia);
-		if (findByNomeFantasia.isPresent() && nomeFantasia.contains(findByNomeFantasia.toString())) {
-			return findByNomeFantasia;
+	public Optional<PessoaJuridicaDTO> findPJByNomeFantasia(String nomeFantasia) {
+		Optional<PessoaJuridicaDTO> findNomeFantasia = pessoaJuridicaRepository.findByNomeFantasia(nomeFantasia);
+		if (findNomeFantasia.isPresent()) {
+			return findNomeFantasia;
 		} else {
 			throw new RuntimeException("Nome Fantasia não encontrado");
 		}
@@ -75,26 +76,27 @@ public class PessoaJuridicaServices {
 		return pessJur;
 	}
 
-	public PessoaJuridica updatePessoaJuridica(Long psjur_id, PessoaJuridica pj) {
+	public PessoaJuridica updatePessoaJuridica(Long psjur_id, PessoaJuridicaDTO pjDTO) {
 
 		PessoaJuridica pessoaJuridica = findPJByID(psjur_id);
-		pessoaJuridica.setCnpj(pj.getCnpj());
-		pessoaJuridica.setCodigoSuframa(pj.getCodigoSuframa());
-		pessoaJuridica.setInscricaoEstadual(pj.getInscricaoEstadual());
-		pessoaJuridica.setInscricaoMunicipal(pj.getInscricaoMunicipal());
-		pessoaJuridica.setNomeFantasia(pj.getNomeFantasia());
-		pessoaJuridica.setRazaoSocial(pj.getRazaoSocial());
-		pessoaJuridica.setSistemaTributario(pj.getSistemaTributario());
-		pessoaJuridica.setSite(pj.getSite());
+		pessoaJuridica.setCnpj(pjDTO.getCnpj());
+		pessoaJuridica.setCodigoSuframa(pjDTO.getCodigoSuframa());
+		pessoaJuridica.setInscricaoEstadual(pjDTO.getInscricaoEstadual());
+		pessoaJuridica.setInscricaoMunicipal(pjDTO.getInscricaoMunicipal());
+		pessoaJuridica.setNomeFantasia(pjDTO.getNomeFantasia());
+		pessoaJuridica.setRazaoSocial(pjDTO.getRazaoSocial());
+		pessoaJuridica.setSistemaTributario(pjDTO.getSistemaTributario());
+		pessoaJuridica.setSite(pjDTO.getSite());
 
 		return pessoaJuridicaRepository.save(pessoaJuridica);
 	}
 
-	public void deletePessoaJuridica(Long psjur_id, PessoaJuridica pj) {
+	public void deletePessoaJuridica(Long psjur_id, PessoaJuridicaDTO pjDTO) {
 
-		if ((pj.getPsjur_id() == null || psjur_id < 0)) {
-			throw new RuntimeException("Pessoa Jurídica de ID [" + psjur_id + "] não excluída e/ou não encontrada");
+		if ((pjDTO.getPsjur_id() == null || psjur_id < 0)) {
+			throw new RuntimeException("Pessoa Jurídica de ID = [" + psjur_id + "]" + HttpStatus.NOT_FOUND + " ");
 		}
-		pessoaJuridicaRepository.deleteById(psjur_id);
+
+		pessoaJuridicaRepository.deleteById(pjDTO.getPsjur_id());
 	}
 }

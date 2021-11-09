@@ -3,7 +3,6 @@ package com.erakis_ics.api.dtos;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 import org.springframework.http.HttpStatus;
 
@@ -13,15 +12,15 @@ public class TestMemoryDTO implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
-	private Long test_id;
-	
-	private HttpStatus http_response;
+	//private Long test_id;
 	
 	private Integer number_http_response;
 	
-	private Date time_stamp;
-
+	private HttpStatus http_response;
+	
 	private String messages;
+	
+	private Date time_stamp;
 	
 	private List<PessoaJuridicaDTO> pessoas_juridicas;
 	
@@ -29,11 +28,11 @@ public class TestMemoryDTO implements Serializable{
 	}
 
 	public TestMemoryDTO(TestMemory t) {
-		this.test_id = t.getTest_id();
+		//this.test_id = t.getTest_id();
 		this.number_http_response = t.getNumber_http_response();
 		this.http_response = t.getHttp_response();
-		this.time_stamp = t.getTime_stamp();
 		this.messages = t.getMessages();
+		this.time_stamp = t.getTime_stamp();
 	}
 
 	/*public Long getTest_id() {
@@ -44,11 +43,6 @@ public class TestMemoryDTO implements Serializable{
 		this.test_id = test_id;
 	} */
 
-	
-	public HttpStatus getHttp_response() {
-		return http_response;
-	}
-
 	public Integer getNumber_http_response() {
 		return number_http_response;
 	}
@@ -56,17 +50,13 @@ public class TestMemoryDTO implements Serializable{
 	public void setNumber_http_response(Integer number_http_response) {
 		this.number_http_response = number_http_response;
 	}
+	
+	public HttpStatus getHttp_response() {
+		return http_response;
+	}
 
 	public void setHttp_response(HttpStatus http_response) {
 		this.http_response = http_response;
-	}
-	
-	public Date getTime_stamp() {
-		return time_stamp;
-	}
-
-	public void setTime_stamp(Date time_stamp) {
-		this.time_stamp = time_stamp;
 	}
 
 	public String getMessages() {
@@ -77,6 +67,13 @@ public class TestMemoryDTO implements Serializable{
 		this.messages = messages;
 	}
 	
+	public Date getTime_stamp() {
+		return time_stamp;
+	}
+
+	public void setTime_stamp(Date time_stamp) {
+		this.time_stamp = time_stamp;
+	}
 
 	public List<PessoaJuridicaDTO> getpessoas_juridicas() {
 		return pessoas_juridicas;
@@ -84,22 +81,5 @@ public class TestMemoryDTO implements Serializable{
 
 	public void setPessoas_juridicas(List<PessoaJuridicaDTO> pessoas_juridicas) {
 		this.pessoas_juridicas = pessoas_juridicas;
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(test_id);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		TestMemoryDTO other = (TestMemoryDTO) obj;
-		return Objects.equals(test_id, other.test_id);
 	}
 }

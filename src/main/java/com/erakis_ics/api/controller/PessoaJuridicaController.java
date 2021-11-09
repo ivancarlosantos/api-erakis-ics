@@ -90,5 +90,5 @@ public class PessoaJuridicaController {
 	public void delete(@PathVariable(name = "psjur_id", required = true) Long psjur_id, PessoaJuridicaDTO pjDTO) {
 		pessoaJuridicaServices.deletePessoaJuridica(psjur_id, pjDTO);
 		ResponseEntity.ok(HttpStatus.NO_CONTENT);
-	}
+	}		
 }

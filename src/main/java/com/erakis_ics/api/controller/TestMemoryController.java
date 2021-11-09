@@ -26,30 +26,32 @@ public class TestMemoryController {
 
 	@GetMapping(path = "/testmemory/test")
 	@ApiOperation(value = "URI para teste e análise de consumo de memória do APP")
-	public ResponseEntity<List<TestMemoryDTO>> test_memory() {
+	public ResponseEntity<TestMemoryDTO> test_memory() {
 		List<TestMemoryDTO> listTestMemoryDTO = new ArrayList<>();
 		List<PessoaJuridicaDTO> pjDTO = pessoaJuridicaServices.findPJAll();
 		TestMemoryDTO t = new TestMemoryDTO();
 
 		if (!pjDTO.isEmpty()) {
+			
 			t.setNumber_http_response(HttpStatus.OK.value());
 			t.setHttp_response(HttpStatus.OK);
-			t.setMessages("[SUCCESS] " + new String("TEST REQUEST"));
-			t.setTime_stamp(new Date(System.currentTimeMillis()));
+			t.setMessages("[SUCCESS] " + new String(" REQUEST"));
+			t.setTime_stamp(new Date());
+			
 			t.setPessoas_juridicas(pjDTO);
 			listTestMemoryDTO.add(t);
 
-			return ResponseEntity.ok().body(listTestMemoryDTO);
+			return ResponseEntity.ok().body(t);
 		} else {
 
 			t.setNumber_http_response(HttpStatus.BAD_REQUEST.value());
 			t.setHttp_response(HttpStatus.BAD_REQUEST);
 			t.setMessages("[ERROR] " + new String("BAD REQUEST"));
-			t.setTime_stamp(new Date(System.currentTimeMillis()));
+			t.setTime_stamp(new Date());
 			t.setPessoas_juridicas(null);
 			listTestMemoryDTO.add(t);
 
-			return ResponseEntity.ok().body(listTestMemoryDTO);
+			return ResponseEntity.ok().body(t);
 		}
 	}
 }

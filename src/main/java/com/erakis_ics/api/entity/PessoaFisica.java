@@ -2,13 +2,19 @@ package com.erakis_ics.api.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -57,26 +63,12 @@ public class PessoaFisica implements Serializable {
 
 	@Column(name = "psfis_profissao", length = 50)
 	private String profissao;
-
-	public PessoaFisica() {
-	}
-
-	public PessoaFisica(Long id, String nome, Sexo sexo, Date dataNascimento, EstadoCivil estadoCivil, String cpf,
-			String rg, String orgaoEmissorRg, String orgaoEmissorCnh, String observacao, String cnh, String profissao) {
-
-		this.psfis_id = id;
-		this.nome = nome;
-		this.sexo = sexo;
-		this.dataNascimento = dataNascimento;
-		this.estadoCivil = estadoCivil;
-		this.cpf = cpf;
-		this.rg = rg;
-		this.orgaoEmissorRg = orgaoEmissorRg;
-		this.orgaoEmissorCnh = orgaoEmissorCnh;
-		this.observacao = observacao;
-		this.cnh = cnh;
-		this.profissao = profissao;
-	}
+	
+	@JoinTable(name = "contato_cliente", 
+			joinColumns={@JoinColumn(name="ctcli_psfis_id")},
+			inverseJoinColumns={@JoinColumn(name="ctcli_clnt_id")})
+	@ManyToMany(fetch = FetchType.LAZY)
+	private Set<Cliente> contatosCliente = new HashSet<Cliente>();
 
 	public Long getId() {
 		return psfis_id;
@@ -173,7 +165,14 @@ public class PessoaFisica implements Serializable {
 	public void setProfissao(String profissao) {
 		this.profissao = profissao;
 	}
+	
+	public Set<Cliente> getContatosCliente() {
+		return contatosCliente;
+	}
 
+	public void setContatosCliente(Set<Cliente> contatosCliente) {
+		this.contatosCliente = contatosCliente;
+	}
 
 	@Override
 	public int hashCode() {

@@ -5,15 +5,17 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
-//@Entity
-//@Table(name = "preco_comercializavel")
+@Entity
+@Table(name = "preco_comercializavel")
 public class PrecoComercializavel implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -33,10 +35,14 @@ public class PrecoComercializavel implements Serializable{
 	@JoinColumn(name = "prccm_tabela_preco_id")
 	private TabelaPreco tabelaPreco;
 	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "prccm_comercializavel_id")
+	private Comercializavel comercializavel;
+	
 	@Column(name = "prccm_valor",precision = 19,scale = 4)
 	private BigDecimal valorUnitario = BigDecimal.ZERO; //valor unitário p/ unidade medida
 	
-	@Column(name = "prccm_valor_unidade_medida")
+	@Column(name = "prccm_valor_unidade_medida",precision = 19,scale = 4)
 	private BigDecimal valorUnidadeMedida = BigDecimal.ZERO;
 	
 	@Column(name = "prccm_valor_embalagem", precision = 19,scale = 4)
@@ -90,6 +96,14 @@ public class PrecoComercializavel implements Serializable{
 
 	public void setTabelaPreco(TabelaPreco tabelaPreco) {
 		this.tabelaPreco = tabelaPreco;
+	}
+
+	public Comercializavel getComercializavel() {
+		return comercializavel;
+	}
+
+	public void setComercializavel(Comercializavel comercializavel) {
+		this.comercializavel = comercializavel;
 	}
 
 	public BigDecimal getValorUnitario() {

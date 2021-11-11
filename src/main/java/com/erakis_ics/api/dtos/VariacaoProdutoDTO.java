@@ -1,4 +1,4 @@
-package com.erakis_ics.api.entity;
+package com.erakis_ics.api.dtos;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -6,72 +6,52 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import com.erakis_ics.api.entity.EmbalagemVariacaoProduto;
+import com.erakis_ics.api.entity.PrecoComercializavel;
+import com.erakis_ics.api.entity.Produto;
+import com.erakis_ics.api.entity.UnidadeMedida;
+import com.erakis_ics.api.entity.VariacaoProduto;
 
-@Entity
-@Table(name = "variacao_produto")   
-public class VariacaoProduto implements Serializable{
+public class VariacaoProdutoDTO implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "vrcpd_id")
 	private Long id;
-	
-	@Column(name = "vrcpd_codigo")
 	private String codigo;
-	
-	@Column(name = "vrcpd_multiplo")
 	private Double multiplicidade = 1d;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "vrcpd_produto_id")
 	private Produto produto;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "vrcpd_unidade_medida_id")
 	private UnidadeMedida unidadeMedida;
-	
-	@Column(name = "vrcpd_peso_bruto")
 	private Double pesoBruto;
-	
-	@Column(name = "vrcpd_peso_liquido")
 	private Double pesoLiquido;
-	
-	@Column(name = "vrcpd_valor_custo_medio", precision = 19,scale = 4)
 	private BigDecimal valorCustoMedio = BigDecimal.ZERO;
-	
-	@Column(name = "vrcpd_valor_custo", precision = 19, scale = 4)
 	private BigDecimal valorCusto = BigDecimal.ZERO;
-	
-	@Column(name = "vrcpd_preco_base",precision = 19,scale = 4)
 	private BigDecimal precoBase = BigDecimal.ZERO; //preço de Venda
-	
-	@Column(name = "vrcpd_desconto_maximo")
 	private Double descontoMaximo;
-	
-	@Column(name = "vrcpd_comissao")
 	private Double comissao;
-	
-	@OneToMany(cascade = CascadeType.ALL,mappedBy = "variacao",fetch = FetchType.LAZY, orphanRemoval = true)
 	private Set<EmbalagemVariacaoProduto> embalagens = new HashSet<EmbalagemVariacaoProduto>();
-		
-	@OneToMany(fetch = FetchType.LAZY,mappedBy = "variacao")
 	private Set<PrecoComercializavel> precos = new HashSet<PrecoComercializavel>();
-	
-	@Column(name = "vrcpd_informacoes_adicionais", columnDefinition = "TEXT")
 	private String informacoesAdicionais;
+	
+	public VariacaoProdutoDTO() {
+	}
+
+	public VariacaoProdutoDTO(VariacaoProduto vp) {
+		//this.id = vp.getId();
+		this.codigo = vp.getCodigo();
+		//this.multiplicidade = vp.getMultiplicidade();
+		this.produto = vp.getProduto();
+		this.unidadeMedida = vp.getUnidadeMedida();
+		this.pesoBruto = vp.getPesoBruto();
+		this.pesoLiquido = vp.getPesoLiquido();
+		this.valorCusto = vp.getValorCusto();
+		this.valorCustoMedio = vp.getValorCustoMedio();
+		//this.precoBase = vp.getPrecoBase();
+		//this.descontoMaximo = vp.getDescontoMaximo();
+		//this.comissao = vp.getComissao();
+		//this.embalagens = vp.getEmbalagens();
+		this.precos = vp.getPrecos();
+		this.informacoesAdicionais = vp.getInformacoesAdicionais();
+	}
 
 	public Long getId() {
 		return id;
@@ -206,7 +186,7 @@ public class VariacaoProduto implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		VariacaoProduto other = (VariacaoProduto) obj;
+		VariacaoProdutoDTO other = (VariacaoProdutoDTO) obj;
 		return Objects.equals(id, other.id);
 	}	
 }

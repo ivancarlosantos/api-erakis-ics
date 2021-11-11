@@ -28,7 +28,7 @@ public class TestMemoryController {
 	@ApiOperation(value = "URI para teste e análise de consumo de memória do APP")
 	public ResponseEntity<TestMemoryDTO> test_memory() {
 		List<TestMemoryDTO> listTestMemoryDTO = new ArrayList<>();
-		List<PessoaJuridicaDTO> pjDTO = pessoaJuridicaServices.findPJAll();
+		List<PessoaJuridicaDTO> pjDTO = pessoaJuridicaServices.findPJAll().subList(0, 10);
 		TestMemoryDTO t = new TestMemoryDTO();
 
 		if (!pjDTO.isEmpty()) {

@@ -29,7 +29,7 @@ public class PessoaFisicaServices {
 
 	public List<PessoaFisicaDTO> findPFAll() {
 		List<PessoaFisicaDTO> listAll = pessoaFisicaRepository
-									 .findAll(Sort.by("nome"))
+									 .findAll(Sort.by("cpf"))
 									 .stream()
 									 .map(pfDTO -> new PessoaFisicaDTO(pfDTO))
 									 .collect(Collectors.toList());

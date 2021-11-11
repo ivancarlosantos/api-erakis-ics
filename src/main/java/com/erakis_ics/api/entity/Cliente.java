@@ -9,6 +9,7 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,12 +17,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderColumn;
+import javax.persistence.Table;
 
-//@Entity
-//@Table(name = "cliente")
+@Entity
+@Table(name = "cliente")
 public class Cliente implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -63,9 +64,9 @@ public class Cliente implements Serializable{
 	@ManyToMany(mappedBy = "contatosCliente", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 	private Set<PessoaFisica> contatos = new HashSet<PessoaFisica>();
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "clnt_representante_id")
-	private Representante representante;
+	//@ManyToOne(fetch = FetchType.LAZY)
+	//@JoinColumn(name = "clnt_representante_id")
+	//private Representante representante;
 	
 	@Column(name = "clnt_comissao_representante")
 	private Double comissaoRepresentante;
@@ -159,13 +160,14 @@ public class Cliente implements Serializable{
 		this.contatos = contatos;
 	}
 
+	/*
 	public Representante getRepresentante() {
 		return representante;
 	}
 
 	public void setRepresentante(Representante representante) {
 		this.representante = representante;
-	}
+	} */
 
 	public Double getComissaoRepresentante() {
 		return comissaoRepresentante;

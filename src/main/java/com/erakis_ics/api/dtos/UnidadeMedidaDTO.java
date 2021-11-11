@@ -1,43 +1,34 @@
-package com.erakis_ics.api.entity;
+package com.erakis_ics.api.dtos;
 
 import java.io.Serializable;
 import java.util.Objects;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.erakis_ics.api.entity.UnidadeMedida;
 
-@Entity
-@Table(name = "unidade_medida")
-public class UnidadeMedida implements Serializable{
-
-	private static final long serialVersionUID = 1L;
+public class UnidadeMedidaDTO implements Serializable{
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "undmd_id")
+private static final long serialVersionUID = 1L;
+	
 	private Long id;
-	
-	@Column(name = "undmd_descricao", unique = true)
 	private String descricao;
-	
-	@Column(name = "undmd_abreviatura", unique = true)
 	private String abreviatura;
-	
-	@Column(name = "undmd_abreviatura_exportacao", unique = true)
 	private String abreviaturaExportacao;	
-	
-	@Column(name = "undmd_codigo_inteligente")
 	private boolean codigoInteligente;
-	
-	@Column(name = "undmd_descricao_inteligente")
 	private boolean descricaoInteligente;
-	
-	@Column(name = "undmd_editavel")
 	private boolean editavel = true;
+	
+	public UnidadeMedidaDTO() {
+	}
+
+	public UnidadeMedidaDTO(UnidadeMedida um) {
+		this.id = um.getId();
+		this.descricao = um.getDescricao();
+		this.abreviatura = um.getAbreviatura();
+		this.abreviaturaExportacao = um.getAbreviaturaExportacao();
+		this.codigoInteligente = um.isCodigoInteligente();
+		this.descricaoInteligente = um.isDescricaoInteligente();
+		this.editavel = um.isEditavel();
+	}
 
 	public Long getId() {
 		return id;
@@ -108,7 +99,7 @@ public class UnidadeMedida implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		UnidadeMedida other = (UnidadeMedida) obj;
+		UnidadeMedidaDTO other = (UnidadeMedidaDTO) obj;
 		return Objects.equals(id, other.id);
-	}
+	}	
 }

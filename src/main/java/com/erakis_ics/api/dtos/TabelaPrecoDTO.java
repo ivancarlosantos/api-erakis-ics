@@ -1,62 +1,42 @@
-package com.erakis_ics.api.entity;
+package com.erakis_ics.api.dtos;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import com.erakis_ics.api.entity.Cliente;
+import com.erakis_ics.api.entity.PrecoComercializavel;
+import com.erakis_ics.api.entity.Representante;
+import com.erakis_ics.api.entity.TabelaPreco;
 
-
-@Entity
-@Table(name = "tabela_preco")
-public class TabelaPreco implements Serializable{
+public class TabelaPrecoDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "tbprc_id")
+
 	private Long id;
-	
-	@Column(name = "tbprc_titulo")
 	private String titulo;
-	
-	@Temporal(TemporalType.DATE)
-	@Column(name = "tbprc_data_inicial")
 	private Date dataInicial;
-	
-	@Temporal(TemporalType.DATE)
-	@Column(name = "tbprc_data_final")
 	private Date dataFinal;
-	
-	@Column(name = "tbprc_padrao")
 	private boolean padrao;
-	
-	@Column(name = "tbprc_padrao_servico")
 	private Boolean padraoServico;
-	
-	@OrderBy("comercializavel")
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,mappedBy = "tabelaPreco",orphanRemoval = true)
-	private List<PrecoComercializavel> precos = new ArrayList<PrecoComercializavel>();
-	
-	@ManyToMany(fetch = FetchType.LAZY,mappedBy = "tabelasPreco",cascade = CascadeType.ALL)
-	private List<Cliente> clientes = new ArrayList<Cliente>();
-	
-	@ManyToMany(fetch = FetchType.LAZY,mappedBy = "tabelasPreco", cascade = CascadeType.ALL)
-	private List<Representante> representantes = new ArrayList<Representante>();
+	private List<PrecoComercializavel> precos;
+	private List<Cliente> clientes;
+	private List<Representante> representantes;
+
+	public TabelaPrecoDTO() {
+	}
+
+	public TabelaPrecoDTO(TabelaPreco tp) {
+		this.id = tp.getId();
+		this.titulo = tp.getTitulo();
+		this.dataInicial = tp.getDataInicial();
+		this.dataFinal = tp.getDataFinal();
+		this.padraoServico = tp.getPadraoServico();
+		this.precos = tp.getPrecos();
+		this.clientes = tp.getClientes();
+		this.representantes = tp.getRepresentantes();
+	}
 
 	public Long getId() {
 		return id;
@@ -128,5 +108,22 @@ public class TabelaPreco implements Serializable{
 
 	public void setRepresentantes(List<Representante> representantes) {
 		this.representantes = representantes;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TabelaPrecoDTO other = (TabelaPrecoDTO) obj;
+		return Objects.equals(id, other.id);
 	}
 }

@@ -1,90 +1,58 @@
-package com.erakis_ics.api.entity;
+package com.erakis_ics.api.dtos;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import com.erakis_ics.api.entity.PrecoComercializavel;
 
-@Entity
-@Table(name = "preco_comercializavel")
-public class PrecoComercializavel implements Serializable{
-	
+public class PrecoComercializavelDTO implements Serializable{
+
 	private static final long serialVersionUID = 1L;
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "prccm_id")
 	private Long id;
-	
-	@Column(name = "prccm_codigo")
 	private String codigo;
-	
-	@Column(name = "prccm_descricao")
 	private String descricao;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "prccm_tabela_preco_id")
-	private TabelaPreco tabelaPreco;
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "prccm_comercializavel_id")
-	private Comercializavel comercializavel;
-	
-	@Column(name = "prccm_valor",precision = 19,scale = 4)
+	//private TabelaPreco tabelaPreco;
+	//private Comercializavel comercializavel;
 	private BigDecimal valorUnitario = BigDecimal.ZERO; //valor unitário p/ unidade medida
-	
-	@Column(name = "prccm_valor_unidade_medida",precision = 19,scale = 4)
 	private BigDecimal valorUnidadeMedida = BigDecimal.ZERO;
-	
-	//@Column(name = "prccm_valor_embalagem", precision = 19,scale = 4)
 	//private BigDecimal valorEmbalagem = BigDecimal.ZERO;
-	
-	@Column(name = "prccm_desconto_maximo")
-	private Double descontoMaximo = 0d;
-	
-	//@Column(name = "prccm_desconto_padrao")
-	//private Double descontoPadrao = 0d;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "prccm_unidade_medida_id")
-	private UnidadeMedida unidadeMedida;
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "prccm_variacao_id")
-	private VariacaoProduto variacao;
-	
-	//@Column(name = "prccm_multiplicidade")
+	//private UnidadeMedida unidadeMedida;
+	//private VariacaoProduto variacao;
 	//private Double multiplicidade = 1d;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "prccm_embalagem_id")
-	private EmbalagemVariacaoProduto embalagem;
-	
-	@Column(name = "prccm_quantidade_minima",precision = 14,scale = 4)
-	private BigDecimal quantidadeMinima;
-	
-	//Campos Transientes para Pedido Resumido
-	@Transient
+	//private EmbalagemVariacaoProduto embalagem;
+	//private BigDecimal quantidadeMinima;
 	private BigDecimal quantidade = BigDecimal.ONE;
-	
-	@Transient
 	private Double desconto = Double.valueOf(0d);
-	
-	@Transient
+	private Double descontoMaximo = 0d;
 	private BigDecimal fatorUnidadeMedida = BigDecimal.ONE;
-	
-	@Transient
 	private BigDecimal valorPreco;
+	
+	public PrecoComercializavelDTO() {
+	}
+	
+
+	public PrecoComercializavelDTO(PrecoComercializavel pc) {
+		this.id = pc.getId();
+		this.codigo = pc.getCodigo();
+		this.descricao = pc.getDescricao();
+		//this.tabelaPreco = pc.getTabelaPreco().getPrecos();
+		//this.comercializavel = pc.getComercializavel();
+		this.valorUnitario = pc.getValorUnitario();
+		this.valorUnidadeMedida = pc.getValorUnidadeMedida();
+		this.descontoMaximo = pc.getDescontoMaximo();
+		//this.valorEmbalagem = pc.getValorEmbalagem();
+		//this.unidadeMedida = unidadeMedida;
+		//this.variacao = pc.getVariacao();
+		//this.multiplicidade = pc.getMultiplicidade();
+		//this.embalagem = pc.getEmbalagem();
+		//this.quantidadeMinima = pc.getQuantidadeMinima();
+		this.quantidade = pc.getQuantidade();
+		//this.desconto = pc.getDesconto();
+		//this.fatorUnidadeMedida = pc.getFatorUnidadeMedida();
+		//this.valorPreco = pc.getValorPreco();
+	} 
 
 	public Long getId() {
 		return id;
@@ -109,23 +77,7 @@ public class PrecoComercializavel implements Serializable{
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-
-	/*public TabelaPreco getTabelaPreco() {
-		return tabelaPreco;
-	}
-
-	public void setTabelaPreco(TabelaPreco tabelaPreco) {
-		this.tabelaPreco = tabelaPreco;
-	} */
-
-	/*public Comercializavel getComercializavel() {
-		return comercializavel;
-	}
-
-	public void setComercializavel(Comercializavel comercializavel) {
-		this.comercializavel = comercializavel;
-	} */
-
+	
 	public BigDecimal getValorUnitario() {
 		return valorUnitario;
 	}
@@ -142,21 +94,37 @@ public class PrecoComercializavel implements Serializable{
 		this.valorUnidadeMedida = valorUnidadeMedida;
 	}
 
-	/*public BigDecimal getValorEmbalagem() {
+	/*public TabelaPreco getTabelaPreco() {
+		return tabelaPreco;
+	}
+
+	public void setTabelaPreco(TabelaPreco tabelaPreco) {
+		this.tabelaPreco = tabelaPreco;
+	}
+
+	public Comercializavel getComercializavel() {
+		return comercializavel;
+	}
+
+	public void setComercializavel(Comercializavel comercializavel) {
+		this.comercializavel = comercializavel;
+	}
+
+	public BigDecimal getValorEmbalagem() {
 		return valorEmbalagem;
 	}
 
 	public void setValorEmbalagem(BigDecimal valorEmbalagem) {
 		this.valorEmbalagem = valorEmbalagem;
-	} */
+	}
 
-	/*public UnidadeMedida getUnidadeMedida() {
+	public UnidadeMedida getUnidadeMedida() {
 		return unidadeMedida;
 	}
 
 	public void setUnidadeMedida(UnidadeMedida unidadeMedida) {
 		this.unidadeMedida = unidadeMedida;
-	} 
+	}
 
 	public VariacaoProduto getVariacao() {
 		return variacao;
@@ -164,7 +132,7 @@ public class PrecoComercializavel implements Serializable{
 
 	public void setVariacao(VariacaoProduto variacao) {
 		this.variacao = variacao;
-	} 
+	}
 
 	public Double getMultiplicidade() {
 		return multiplicidade;
@@ -188,14 +156,6 @@ public class PrecoComercializavel implements Serializable{
 
 	public void setQuantidadeMinima(BigDecimal quantidadeMinima) {
 		this.quantidadeMinima = quantidadeMinima;
-	}
-
-	public Double getDescontoPadrao() {
-		return descontoPadrao;
-	}
-
-	public void setDescontoPadrao(Double descontoPadrao) {
-		this.descontoPadrao = descontoPadrao;
 	} */
 
 	public BigDecimal getQuantidade() {
@@ -205,22 +165,14 @@ public class PrecoComercializavel implements Serializable{
 	public void setQuantidade(BigDecimal quantidade) {
 		this.quantidade = quantidade;
 	}
-	
-	public Double getDescontoMaximo() {
-		return descontoMaximo;
-	}
 
-	public void setDescontoMaximo(Double descontoMaximo) {
-		this.descontoMaximo = descontoMaximo;
-	}
-
-	/*public Double getDesconto() {
+	public Double getDesconto() {
 		return desconto;
 	}
 
 	public void setDesconto(Double desconto) {
 		this.desconto = desconto;
-	} 
+	}
 
 	public BigDecimal getFatorUnidadeMedida() {
 		return fatorUnidadeMedida;
@@ -232,16 +184,25 @@ public class PrecoComercializavel implements Serializable{
 
 	public BigDecimal getValorPreco() {
 		return valorPreco;
-	} 
+	}
 
 	public void setValorPreco(BigDecimal valorPreco) {
 		this.valorPreco = valorPreco;
-	} */
+	}
+	
+	public Double getDescontoMaximo() {
+		return descontoMaximo;
+	}
+
+
+	public void setDescontoMaximo(Double descontoMaximo) {
+		this.descontoMaximo = descontoMaximo;
+	}
 
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
-	} 
+	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -251,7 +212,7 @@ public class PrecoComercializavel implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		PrecoComercializavel other = (PrecoComercializavel) obj;
+		PrecoComercializavelDTO other = (PrecoComercializavelDTO) obj;
 		return Objects.equals(id, other.id);
 	}
 }

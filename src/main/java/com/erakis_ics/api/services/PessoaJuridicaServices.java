@@ -29,6 +29,7 @@ public class PessoaJuridicaServices {
 	}
 
 	public List<PessoaJuridicaDTO> findPJAll() {
+		
 		List<PessoaJuridicaDTO> listAll = pessoaJuridicaRepository
 				 					      .findAll(Sort.by("nomeFantasia"))
 				 					      .stream()

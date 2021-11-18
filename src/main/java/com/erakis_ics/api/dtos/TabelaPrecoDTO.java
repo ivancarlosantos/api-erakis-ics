@@ -108,7 +108,7 @@ public class TabelaPrecoDTO implements Serializable {
 
 	public void setRepresentantes(List<Representante> representantes) {
 		this.representantes = representantes;
-	}
+	} 
 
 	@Override
 	public int hashCode() {

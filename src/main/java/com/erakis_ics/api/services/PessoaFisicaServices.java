@@ -5,6 +5,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -28,12 +30,13 @@ public class PessoaFisicaServices {
 	}
 
 	public List<PessoaFisicaDTO> findPFAll() {
+		Sort sort = Sort.by("cpf").ascending();
+		Pageable pageable = PageRequest.of(0, 4, sort);
 		List<PessoaFisicaDTO> listAll = pessoaFisicaRepository
-									 .findAll(Sort.by("cpf"))
+									 .findAll(pageable)
 									 .stream()
 									 .map(pfDTO -> new PessoaFisicaDTO(pfDTO))
 									 .collect(Collectors.toList());
-		
 		return listAll;
 	}
 

@@ -14,7 +14,7 @@ import com.erakis_ics.api.entity.PessoaJuridica;
  */
 
 @Repository
-public interface PessoaJuridicaRepository extends JpaRepository<PessoaJuridica, Long> {
+public interface PessoaJuridicaRepository extends JpaRepository<PessoaJuridica,Long> {
 
 	Optional<PessoaJuridicaDTO> findByCnpj(String cnpj);
 

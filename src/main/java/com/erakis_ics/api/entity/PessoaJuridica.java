@@ -23,44 +23,14 @@ public class PessoaJuridica implements Serializable {
 	@Column(name = "psjur_cnpj", nullable = false, length = 14)
 	private String cnpj;
 
-	@Column(name = "psjur_codigo_suframa", length = 255)
-	private String codigoSuframa;
-
-	@Column(name = "psjur_inscricao_estadual", length = 255)
-	private String inscricaoEstadual;
-
-	@Column(name = "psjur_inscricao_municipal", length = 255)
-	private String inscricaoMunicipal;
-
 	@Column(name = "psjur_nome_fantasia", nullable = false, length = 255)
 	private String nomeFantasia;
 
 	@Column(name = "psjur_razao_social", nullable = false, length = 255)
 	private String razaoSocial;
 
-	@Column(name = "psjur_sistema_tributario")
-	private SistemaTributario sistemaTributario;
-
 	@Column(name = "psjur_site", length = 255)
 	private String site;
-
-	public PessoaJuridica() {
-	}
-
-	public PessoaJuridica(Long psjur_id, String cnpj, String codigoSuframa, String inscricaoEstadual,
-			String inscricaoMunicipal, String nomeFantasia, String razaoSocial, SistemaTributario sistemaTributario,
-			String site) {
-		super();
-		this.psjur_id = psjur_id;
-		this.cnpj = cnpj;
-		this.codigoSuframa = codigoSuframa;
-		this.inscricaoEstadual = inscricaoEstadual;
-		this.inscricaoMunicipal = inscricaoMunicipal;
-		this.nomeFantasia = nomeFantasia;
-		this.razaoSocial = razaoSocial;
-		this.sistemaTributario = sistemaTributario;
-		this.site = site;
-	}
 
 	public Long getPsjur_id() {
 		return psjur_id;
@@ -78,30 +48,6 @@ public class PessoaJuridica implements Serializable {
 		this.cnpj = cnpj;
 	}
 
-	public String getCodigoSuframa() {
-		return codigoSuframa;
-	}
-
-	public void setCodigoSuframa(String codigoSuframa) {
-		this.codigoSuframa = codigoSuframa;
-	}
-
-	public String getInscricaoEstadual() {
-		return inscricaoEstadual;
-	}
-
-	public void setInscricaoEstadual(String inscricaoEstadual) {
-		this.inscricaoEstadual = inscricaoEstadual;
-	}
-
-	public String getInscricaoMunicipal() {
-		return inscricaoMunicipal;
-	}
-
-	public void setInscricaoMunicipal(String inscricaoMunicipal) {
-		this.inscricaoMunicipal = inscricaoMunicipal;
-	}
-
 	public String getNomeFantasia() {
 		return nomeFantasia;
 	}
@@ -116,14 +62,6 @@ public class PessoaJuridica implements Serializable {
 
 	public void setRazaoSocial(String razaoSocial) {
 		this.razaoSocial = razaoSocial;
-	}
-
-	public SistemaTributario getSistemaTributario() {
-		return sistemaTributario;
-	}
-
-	public void setSistemaTributario(SistemaTributario sistemaTributario) {
-		this.sistemaTributario = sistemaTributario;
 	}
 
 	public String getSite() {

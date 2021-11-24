@@ -2,7 +2,11 @@ package com.erakis_ics.api.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,15 +15,20 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 
 @Entity
 @Table(name = "pessoa")
-//@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Pessoa implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -28,6 +37,14 @@ public class Pessoa implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "pess_id")
 	private Long id;
+	
+	@OrderBy
+	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "dono", orphanRemoval = true)
+	private Set<Endereco> enderecos = new HashSet<Endereco>();
+	
+	@OrderBy
+	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "dono", orphanRemoval = true)
+	private Set<Telefone> telefones = new HashSet<Telefone>();
 	
 	@Column(name = "pess_email")
 	private String email;
@@ -63,6 +80,32 @@ public class Pessoa implements Serializable{
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Set<Endereco> getEnderecos() {
+		return enderecos;
+	}
+	
+	@Transient
+	public List<Endereco> getListaEnderecos() {
+		return new LinkedList<Endereco>(getEnderecos());
+	}
+
+	public void setEnderecos(Set<Endereco> enderecos) {
+		this.enderecos = enderecos;
+	}
+
+	public Set<Telefone> getTelefones() {
+		return telefones;
+	}
+	
+	@Transient
+	public List<Telefone> getListaTelefones() {
+		return new LinkedList<Telefone>(getTelefones());
+	}
+
+	public void setTelefones(Set<Telefone> telefones) {
+		this.telefones = telefones;
 	}
 
 	public String getEmail() {

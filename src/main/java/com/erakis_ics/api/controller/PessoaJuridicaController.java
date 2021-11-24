@@ -35,12 +35,21 @@ public class PessoaJuridicaController {
 		PessoaJuridicaDTO pjDTO = new PessoaJuridicaDTO(pessoaJuridica);
 		return ResponseEntity.ok().body(pjDTO);
 	}
-
+	
 	@GetMapping(path = "/pessoajuridica/listPessoaJuridicaTodos")
-	@ApiOperation(value = "Lista todas as Pessoa Jurídicas")
-	public ResponseEntity<List<PessoaJuridicaDTO>> listPessoaJuridicaAll() {
-		List<PessoaJuridicaDTO> listPJDTO = pessoaJuridicaServices.findPJAll();
-		return ResponseEntity.ok().body(listPJDTO);
+	@ApiOperation(value = "Lista todas as pessoas jurídicas")
+	public ResponseEntity<List<PessoaJuridicaDTO>> listPessoaJuridicaAll(){
+		List<PessoaJuridicaDTO> listAll = pessoaJuridicaServices.findPJAll();
+		return ResponseEntity.ok().body(listAll);
+	}
+
+	@GetMapping(path = "/pessoajuridica/listPessoaJuridica/{numberPage}")
+	@ApiOperation(value = "Lista todas as Pessoa Jurídicas por paginação")
+	public ResponseEntity<List<PessoaJuridica>> listPessoaJuridicaAll(
+			@PathVariable Integer numberPage) {
+		List<PessoaJuridica> listPJ = pessoaJuridicaServices.findPJAll(numberPage,10);
+		
+		return ResponseEntity.ok().body(listPJ);
 	}
 
 	@GetMapping(path = "/pessoajuridica/findPJByID/{psjur_id}")

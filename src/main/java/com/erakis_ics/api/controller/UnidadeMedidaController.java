@@ -1,6 +1,7 @@
 package com.erakis_ics.api.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,8 +39,16 @@ public class UnidadeMedidaController {
 	@GetMapping(path = "/unidademedida/listUnidadeMedidaTodos")
 	@ApiOperation(value = "lista todas as unidades de medidas")
 	public ResponseEntity<List<UnidadeMedidaDTO>> listUnidadeMedidaAll(){
-		List<UnidadeMedidaDTO> listUMDTO = unidadeMedidaServices.listUnidadeMedidaAll();
-		return ResponseEntity.ok().body(listUMDTO);
+		List<UnidadeMedidaDTO> listAll = unidadeMedidaServices.listUnidadeMedidaAll();
+		return ResponseEntity.ok().body(listAll);
+	}
+	
+	@GetMapping(path = "/unidademedida/listUnidadeMedida/{numberPage}")
+	@ApiOperation(value = "Lista todas as unidades de medidas por paginação")
+	public ResponseEntity<List<UnidadeMedida>> listUnidadeMedidaAll(
+			@PathVariable Integer numberPage){
+		List<UnidadeMedida> listUM = unidadeMedidaServices.listUnidadeMedidaAll(numberPage, 10);
+		return ResponseEntity.ok().body(listUM);
 	}
 	
 	@PutMapping(path = "/unidademedida/update/{id}")
@@ -48,6 +57,15 @@ public class UnidadeMedidaController {
 			@RequestBody UnidadeMedidaDTO umDTO){
 		UnidadeMedida um = unidadeMedidaServices.updateUnidadeMedida(id, umDTO);
 		return ResponseEntity.ok().body(um);
+	}
+	
+	@GetMapping(path = "/unidademedida/findUnidadeMedida/{undmd_descricao}")
+	@ApiOperation(value = "Restorna uma unidade de medida por sua descrição")
+	public ResponseEntity<UnidadeMedidaDTO> findUnidadeMedida(
+			@PathVariable(name = "undmd_descricao", required = true) String undmd_descricao){
+		Optional<UnidadeMedida> findUnidadeMedida = unidadeMedidaServices.findUnidadeMedida(undmd_descricao);
+		UnidadeMedidaDTO dto  = new UnidadeMedidaDTO(findUnidadeMedida.get());
+		return ResponseEntity.ok().body(dto);
 	}
 	
 	@DeleteMapping(path = "/unidademedida/delete/{id}")

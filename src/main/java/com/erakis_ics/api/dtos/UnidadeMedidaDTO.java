@@ -25,9 +25,9 @@ private static final long serialVersionUID = 1L;
 		this.descricao = um.getDescricao();
 		this.abreviatura = um.getAbreviatura();
 		this.abreviaturaExportacao = um.getAbreviaturaExportacao();
-		//this.codigoInteligente = um.isCodigoInteligente();
-		//this.descricaoInteligente = um.isDescricaoInteligente();
-		//this.editavel = um.isEditavel();
+		this.codigoInteligente = um.isCodigoInteligente();
+		this.descricaoInteligente = um.isDescricaoInteligente();
+		this.editavel = um.isEditavel();
 	}
 
 	public Long getId() {

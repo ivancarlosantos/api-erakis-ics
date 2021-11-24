@@ -5,6 +5,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -22,21 +25,38 @@ public class UnidadeMedidaServices {
 	public UnidadeMedida saveUnidadeMedida(UnidadeMedida um) {
 		return unidadeMedidaRepository.save(um);
 	}
-
-	public List<UnidadeMedidaDTO> listUnidadeMedidaAll() {
+	
+	public List<UnidadeMedidaDTO> listUnidadeMedidaAll(){
 		List<UnidadeMedidaDTO> listAll = unidadeMedidaRepository
-									  .findAll(Sort.by("descricao"))
-									  .stream()
-									  .map(um -> new UnidadeMedidaDTO(um))
-									  .collect(Collectors.toList());
+										 .findAll()
+										 .stream()
+										 .map(um->new UnidadeMedidaDTO(um))
+										 .collect(Collectors.toList());
 		return listAll;
+	}
+
+	public List<UnidadeMedida> listUnidadeMedidaAll(Integer numberPage, Integer pageSize) {
+		Sort sort = Sort.by("descricao");
+		Pageable page = PageRequest.of(numberPage, pageSize,sort);
+		Page<UnidadeMedida> pageResult = unidadeMedidaRepository.findAll(page);
+		return pageResult.toList();
+	}
+	
+	public Optional<UnidadeMedida> findUnidadeMedida(String descricao){
+		Optional<UnidadeMedida> findDescricao = unidadeMedidaRepository.findByUnidadeMedida(descricao);
+		if (findDescricao.isPresent()) {
+		}else {
+			throw new RuntimeException("Unidade de medida não encontrada");
+		}
+		
+		return findDescricao;
 	}
 	
 	public UnidadeMedida findUMByID(Long id) {
 		Optional<UnidadeMedida> findByID = unidadeMedidaRepository.findById(id);
 		UnidadeMedida um = null;
 		if (!findByID.isPresent()) {
-			throw new RuntimeException("Unidade de Medida = [" + id + "] " + HttpStatus.NOT_FOUND + " ");
+			throw new RuntimeException("Unidade de Medida [" + id + "] " + HttpStatus.NOT_FOUND + " ");
 		}
 		um = findByID.get();
 

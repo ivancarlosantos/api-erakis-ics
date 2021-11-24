@@ -8,12 +8,12 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.erakis_ics.api.entity.UnidadeMedida;
+import com.erakis_ics.api.entity.Estado;
 
 @Repository
-public interface UnidadeMedidaRepository extends JpaRepository<UnidadeMedida, Long> {
+public interface EstadoRepository extends JpaRepository<Estado,Long>{
 	
 	@Transactional(readOnly = true)
-	@Query(value = "SELECT * FROM unidade_medida u WHERE u.undmd_descricao LIKE %?1%", nativeQuery = true)
-	Optional<UnidadeMedida> findByUnidadeMedida(@Param(value = "unidadeMedida") String unidadeMedida);
+	@Query(value = "SELECT * FROM estado u WHERE u.est_sigla=?1", nativeQuery = true)
+	Optional<Estado> findBySigla(@Param(value = "sigla") String sigla);
 }

@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.erakis_ics.api.entity.PessoaFisica;
 
 @Repository
-public interface PessoaFisicaRepository extends JpaRepository<PessoaFisica, Long> {
+public interface PessoaFisicaRepository extends JpaRepository<PessoaFisica, Long>{
 
 	
 	@Transactional(readOnly = true)

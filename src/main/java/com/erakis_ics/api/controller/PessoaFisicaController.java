@@ -35,12 +35,19 @@ public class PessoaFisicaController {
 		PessoaFisicaDTO pfDTO = new PessoaFisicaDTO(pessoaFisica);
 		return ResponseEntity.ok().body(pfDTO);
 	}
-
+	
 	@GetMapping(path = "/pessoafisica/listPessoaFisicaTodos")
-	@ApiOperation(value = "Lista todas as Pessoa Físicas")
-	public ResponseEntity<List<PessoaFisicaDTO>> listPessoaFisicaAll() {
-		List<PessoaFisicaDTO> listPFDTO = pessoaFisicaServices.findPFAll();
-		return ResponseEntity.ok().body(listPFDTO);
+	@ApiOperation(value = "Lista todas as pessoas físicas")
+	public ResponseEntity<List<PessoaFisicaDTO>> listPessoaFisicaAll(){
+		List<PessoaFisicaDTO> listAll = pessoaFisicaServices.findPFAll();
+		return ResponseEntity.ok().body(listAll);				
+	}
+
+	@GetMapping(path = "/pessoafisica/listPessoaFisica/{numberPage}")
+	@ApiOperation(value = "Lista todas as Pessoa Físicas por paginação")
+	public ResponseEntity<List<PessoaFisica>> listPessoaFisicaAll(@PathVariable int numberPage) {
+		List<PessoaFisica> listPF = pessoaFisicaServices.findPFAll(numberPage, 12);
+		return ResponseEntity.ok().body(listPF);
 	}
 
 	@GetMapping(path = "/pessoafisica/findPFByID/{psfis_id}")
@@ -50,10 +57,11 @@ public class PessoaFisicaController {
 		PessoaFisicaDTO pfDTO = new PessoaFisicaDTO(pf);
 		return ResponseEntity.ok().body(pfDTO);
 	}
-	
+
 	@GetMapping(path = "/pessoafisica/findPFByNome/{psfis_nome}")
 	@ApiOperation(value = "Retorna Pessoa Física pelo seu nome")
-	public ResponseEntity<PessoaFisicaDTO> findPFByNome(@PathVariable(name = "psfis_nome", required = true) String psfis_nome){
+	public ResponseEntity<PessoaFisicaDTO> findPFByNome(
+			@PathVariable(name = "psfis_nome", required = true) String psfis_nome) {
 		Optional<PessoaFisica> pf = pessoaFisicaServices.findPFByNome(psfis_nome);
 		PessoaFisicaDTO pfDTO = new PessoaFisicaDTO(pf.get());
 		return ResponseEntity.ok().body(pfDTO);
@@ -69,7 +77,8 @@ public class PessoaFisicaController {
 
 	@PutMapping(path = "/pessoafisica/update/{psfis_id}")
 	@ApiOperation(value = "Atualiza os registros de uma Pessoa Física")
-	public ResponseEntity<PessoaFisica> update(@PathVariable(name = "psfis_id", required = true) Long psfis_id, @RequestBody PessoaFisicaDTO pfDTO) {
+	public ResponseEntity<PessoaFisica> update(@PathVariable(name = "psfis_id", required = true) Long psfis_id,
+			@RequestBody PessoaFisicaDTO pfDTO) {
 		PessoaFisica pessoaFisica = pessoaFisicaServices.updatePessoaFisica(psfis_id, pfDTO);
 		return ResponseEntity.ok().body(pessoaFisica);
 	}

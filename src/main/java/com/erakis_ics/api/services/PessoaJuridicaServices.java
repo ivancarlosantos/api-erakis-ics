@@ -5,6 +5,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -27,20 +30,26 @@ public class PessoaJuridicaServices {
 
 		return pessoaJuridicaRepository.save(pj);
 	}
-
-	public List<PessoaJuridicaDTO> findPJAll() {
-		
+	
+	public List<PessoaJuridicaDTO> findPJAll(){
 		List<PessoaJuridicaDTO> listAll = pessoaJuridicaRepository
-				 					      .findAll(Sort.by("nomeFantasia"))
-				 					      .stream()
-				 					      .map(pjDTO -> new PessoaJuridicaDTO(pjDTO))
-				 					      .collect(Collectors.toList());
+										  .findAll(Sort.by("nomeFantasia"))
+										  .stream()
+										  .map(pj->new PessoaJuridicaDTO(pj))
+										  .collect(Collectors.toList());
 		return listAll;
+	}
+
+	public List<PessoaJuridica> findPJAll(Integer pageNumber, Integer pageSize) {
+		Sort sort = Sort.by("nomeFantasia");
+		Pageable pageable = PageRequest.of(pageNumber, pageSize,sort);
+		Page<PessoaJuridica> pageResult = pessoaJuridicaRepository.findAll(pageable);
+		return pageResult.toList();
 	}
 
 	public Optional<PessoaJuridicaDTO> findPJByCNPJ(String cnpj) {
 		Optional<PessoaJuridicaDTO> findCNPJ = pessoaJuridicaRepository.findByCnpj(cnpj);
-	
+
 		if (findCNPJ.isPresent()) {
 		} else {
 			throw new RuntimeException("CNPJ não encontrado");
@@ -81,16 +90,12 @@ public class PessoaJuridicaServices {
 
 		PessoaJuridica pessoaJuridica = findPJByID(psjur_id);
 		pessoaJuridica.setCnpj(pjDTO.getCnpj());
-		pessoaJuridica.setCodigoSuframa(pjDTO.getCodigoSuframa());
-		pessoaJuridica.setInscricaoEstadual(pjDTO.getInscricaoEstadual());
-		pessoaJuridica.setInscricaoMunicipal(pjDTO.getInscricaoMunicipal());
 		pessoaJuridica.setNomeFantasia(pjDTO.getNomeFantasia());
 		pessoaJuridica.setRazaoSocial(pjDTO.getRazaoSocial());
-		pessoaJuridica.setSistemaTributario(pjDTO.getSistemaTributario());
 		pessoaJuridica.setSite(pjDTO.getSite());
 
 		return pessoaJuridicaRepository.save(pessoaJuridica);
-	}
+	} 
 
 	public void deletePessoaJuridica(Long psjur_id, PessoaJuridicaDTO pjDTO) {
 
@@ -99,5 +104,5 @@ public class PessoaJuridicaServices {
 		}
 
 		pessoaJuridicaRepository.deleteById(pjDTO.getPsjur_id());
-	}
+	} 
 }

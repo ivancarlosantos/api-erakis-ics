@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 import com.erakis_ics.api.entity.TabelaPreco;
 
 @Repository
-public interface TabelaPrecoRepository extends JpaRepository<TabelaPreco,Long>{
+public interface TabelaPrecoRepository extends JpaRepository<TabelaPreco, Long> { 
 }

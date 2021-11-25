@@ -43,8 +43,5 @@ public class MunicipioController {
 	public ResponseEntity<List<Municipio>> listMunicipios(@PathVariable Integer numberPage){
 		List<Municipio> listAll = municipioServices.listMunicipios(numberPage,12);
 		return ResponseEntity.ok().body(listAll);
-	}
-	
-	
-	
+	}	
 }

@@ -27,7 +27,7 @@ public class EstadoServices {
 	
 	public List<EstadoDTO> listEstados(){
 		List<EstadoDTO> listAll = estadoRepository
-								  .findAll()
+								  .findAll(Sort.by("descricao"))
 								  .stream()
 								  .map(est->new EstadoDTO(est))
 								  .collect(Collectors.toList());

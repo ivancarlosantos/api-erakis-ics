@@ -3,6 +3,7 @@ package com.erakis_ics.api.dtos;
 import java.io.Serializable;
 import java.util.Objects;
 
+import com.erakis_ics.api.entity.Estado;
 import com.erakis_ics.api.entity.Municipio;
 
 public class MunicipioDTO implements Serializable{
@@ -11,7 +12,7 @@ public class MunicipioDTO implements Serializable{
 
 	private Long id;
 	private Integer ibge;
-	//private Estado estado;
+	private Estado estado;
 	private String descricao;
 	
 	public MunicipioDTO() {
@@ -20,7 +21,7 @@ public class MunicipioDTO implements Serializable{
 	public MunicipioDTO(Municipio mun) {
 		this.id = mun.getId();
 		this.ibge = mun.getIbge();
-		//this.estado = mun.getEstado();
+		this.estado = mun.getEstado();
 		this.descricao = mun.getDescricao();
 	}
 
@@ -40,14 +41,14 @@ public class MunicipioDTO implements Serializable{
 		this.ibge = ibge;
 	}
 
-	/*
+	
 	public Estado getEstado() {
 		return estado;
 	}
 
 	public void setEstado(Estado estado) {
 		this.estado = estado;
-	} */
+	} 
 
 	public String getDescricao() {
 		return descricao;

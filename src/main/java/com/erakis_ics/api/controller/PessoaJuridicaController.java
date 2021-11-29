@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.erakis_ics.api.dtos.PessoaJuridicaDTO;
 import com.erakis_ics.api.entity.PessoaJuridica;
 import com.erakis_ics.api.services.PessoaJuridicaServices;
+import com.erakis_ics.api.status.StatusPessoaJuridica;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -45,11 +46,14 @@ public class PessoaJuridicaController {
 
 	@GetMapping(path = "/pessoajuridica/listPessoaJuridica/{numberPage}")
 	@ApiOperation(value = "Lista todas as Pessoa Jurídicas por paginação")
-	public ResponseEntity<List<PessoaJuridica>> listPessoaJuridicaAll(
+	public ResponseEntity<?> listPessoaJuridicaAll(
 			@PathVariable Integer numberPage) {
+		StatusPessoaJuridica dto = new StatusPessoaJuridica();
 		List<PessoaJuridica> listPJ = pessoaJuridicaServices.findPJAll(numberPage,10);
-		
-		return ResponseEntity.ok().body(listPJ);
+		dto.setHttp_response(HttpStatus.OK);
+		dto.setNumber_http_response(HttpStatus.OK.value());
+		dto.setPessoas_juridica(listPJ);
+		return ResponseEntity.ok().body(dto);
 	}
 
 	@GetMapping(path = "/pessoajuridica/findPJByID/{psjur_id}")

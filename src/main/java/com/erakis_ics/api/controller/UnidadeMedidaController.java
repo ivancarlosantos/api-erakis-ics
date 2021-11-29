@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.erakis_ics.api.dtos.UnidadeMedidaDTO;
 import com.erakis_ics.api.entity.UnidadeMedida;
 import com.erakis_ics.api.services.UnidadeMedidaServices;
+import com.erakis_ics.api.status.StatusUnidadeMedida;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -45,10 +46,14 @@ public class UnidadeMedidaController {
 	
 	@GetMapping(path = "/unidademedida/listUnidadeMedida/{numberPage}")
 	@ApiOperation(value = "Lista todas as unidades de medidas por paginação")
-	public ResponseEntity<List<UnidadeMedida>> listUnidadeMedidaAll(
+	public ResponseEntity<?> listUnidadeMedidaAll(
 			@PathVariable Integer numberPage){
+		StatusUnidadeMedida dto = new StatusUnidadeMedida();
 		List<UnidadeMedida> listUM = unidadeMedidaServices.listUnidadeMedidaAll(numberPage, 10);
-		return ResponseEntity.ok().body(listUM);
+		dto.setHttp_response(HttpStatus.OK);
+		dto.setNumber_http_response(HttpStatus.OK.value());
+		dto.setUnidade_medida(listUM);
+		return ResponseEntity.ok().body(dto);
 	}
 	
 	@PutMapping(path = "/unidademedida/update/{id}")

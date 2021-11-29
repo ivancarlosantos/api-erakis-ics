@@ -40,7 +40,7 @@ public class Estado implements Serializable{
 	private boolean stAntecipada;
 	
 	//@OneToMany(cascade = CascadeType.REMOVE,fetch = FetchType.LAZY,mappedBy = "estado")
-	//private Set<Municipio> municipios = new HashSet<Municipio>(0);
+	//private List<Municipio> municipios = new ArrayList<>();
 	
 	@Column(name = "est_base_dupla")
 	private Boolean baseDupla;
@@ -107,11 +107,11 @@ public class Estado implements Serializable{
 		this.stAntecipada = stAntecipada;
 	}
 
-	/*public Set<Municipio> getMunicipios() {
+/*	public List<Municipio> getMunicipios() {
 		return municipios;
 	}
 
-	public void setMunicipios(Set<Municipio> municipios) {
+	public void setMunicipios(List<Municipio> municipios) {
 		this.municipios = municipios;
 	} */
 

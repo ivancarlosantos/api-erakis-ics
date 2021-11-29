@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import com.erakis_ics.api.entity.Endereco;
+import com.erakis_ics.api.entity.Municipio;
+import com.erakis_ics.api.entity.Pessoa;
 import com.erakis_ics.api.entity.TipoEndereco;
 
 public class EnderecoDTO implements Serializable {
@@ -11,13 +13,13 @@ public class EnderecoDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Long id;
-	//private Pessoa dono;
+	private Pessoa dono;
 	private String logradouro;
 	private String numero;
 	private String bairro;
 	private String cep;
 	private String complemento;
-	//private Municipio municipio;
+	private Municipio municipio;
 	private TipoEndereco tipo;
 
 	public EnderecoDTO() {
@@ -25,13 +27,13 @@ public class EnderecoDTO implements Serializable {
 
 	public EnderecoDTO(Endereco end) {
 		this.id = end.getId();
-		//this.dono = end.getDono();
+		this.dono = end.getDono();
 		this.logradouro = end.getLogradouro();
 		this.numero = end.getNumero();
 		this.bairro = end.getBairro();
 		this.cep = end.getCep();
 		this.complemento = end.getComplemento();
-		//this.municipio = end.getMunicipio();
+		this.municipio = end.getMunicipio();
 		this.tipo = end.getTipo();
 	}
 
@@ -43,13 +45,13 @@ public class EnderecoDTO implements Serializable {
 		this.id = id;
 	}
 
-/*	public Pessoa getDono() {
+	public Pessoa getDono() {
 		return dono;
 	}
 
 	public void setDono(Pessoa dono) {
 		this.dono = dono;
-	} */
+	} 
 
 	public String getLogradouro() {
 		return logradouro;
@@ -91,13 +93,13 @@ public class EnderecoDTO implements Serializable {
 		this.complemento = complemento;
 	}
 
-	/*public Municipio getMunicipio() {
+	public Municipio getMunicipio() {
 		return municipio;
 	}
 
 	public void setMunicipio(Municipio municipio) {
 		this.municipio = municipio;
-	}*/
+	}
 
 	public TipoEndereco getTipo() {
 		return tipo;

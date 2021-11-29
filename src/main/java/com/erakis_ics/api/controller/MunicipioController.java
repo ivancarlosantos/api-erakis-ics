@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,7 +25,7 @@ public class MunicipioController {
 	@Autowired
 	private MunicipioServices municipioServices;
 	
-	@GetMapping(path = "/municipio/save")
+	@PostMapping(path = "/municipio/save")
 	@ApiOperation(value = "Cadastra um novo município")
 	public ResponseEntity<MunicipioDTO> saveMunicipio(@RequestBody Municipio mun) {
 		Municipio municipio = municipioServices.saveMunicipio(mun);
@@ -43,5 +45,13 @@ public class MunicipioController {
 	public ResponseEntity<List<Municipio>> listMunicipios(@PathVariable Integer numberPage){
 		List<Municipio> listAll = municipioServices.listMunicipios(numberPage,12);
 		return ResponseEntity.ok().body(listAll);
-	}	
+	}
+	
+	@PutMapping(path = "/municipio/update/{municipio_id}")
+	@ApiOperation(value = "Atualiza um município")
+	public ResponseEntity<Municipio> updateMunicipio(@PathVariable(name = "municipio_id", required = true) Long municipio_id, 
+			@RequestBody MunicipioDTO dto){
+		Municipio municipio = municipioServices.updateMunicipio(municipio_id, dto);
+		return ResponseEntity.ok().body(municipio);
+	}
 }

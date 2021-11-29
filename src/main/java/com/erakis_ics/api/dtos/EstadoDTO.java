@@ -17,7 +17,7 @@ public class EstadoDTO implements Serializable{
 	private Regiao regiao;
 	private Double icms;
 	private boolean stAntecipada;
-	//private Set<Municipio> municipios = new HashSet<Municipio>(0);
+	//private List<Municipio> municipios = new ArrayList<>();
 	private Boolean baseDupla;
 	private Boolean baseDuplaConv;
 	
@@ -108,21 +108,6 @@ public class EstadoDTO implements Serializable{
 	public void setStAntecipada(boolean stAntecipada) {
 		this.stAntecipada = stAntecipada;
 	}
-
-
-	/*public List<Municipio> getMunicipio(){
-		return getMunicipio();
-	}
-	
-	public Set<Municipio> getMunicipios() {
-		return municipios;
-	}
-
-
-	public void setMunicipios(Set<Municipio> municipios) {
-		this.municipios = municipios;
-	} */
-
 
 	public Boolean getBaseDupla() {
 		return baseDupla;

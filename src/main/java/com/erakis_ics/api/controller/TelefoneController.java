@@ -26,8 +26,16 @@ public class TelefoneController {
 	@ApiOperation(value = "Retorna todos os telefones cadastrados")
 	public ResponseEntity<List<TelefoneDTO>> listTelefones(){
 		List<TelefoneDTO> listAll = telefoneServices.listTelefonesAll();
+		System.out.println(listAll);
 		return ResponseEntity.ok().body(listAll);
 	}
+	
+	/*@GetMapping(path = "/telefones/{}")
+	@ApiOperation(value = "retorna os registros de uma pessoa")
+	public ResponseEntity<List<Telefone>> listPessoas(@PathVariable(name = "pessoa_id", required = true) Long pessoa_id){
+		List<Telefone> listAll = telefoneServices.listTelefonesAll();
+		return ResponseEntity.ok().body(listAll);
+	}*/
 	
 	@GetMapping(path = "/telefones/listTelefones/{numberPage}")
 	@ApiOperation(value = "Retorna todos os telefones cadastrados por paginação")
